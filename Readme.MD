@@ -48,15 +48,15 @@ Separação de responsabilidades por camada:
    cd FinancasPessoais
 
 **2.** Rodar via .NET CLI:
-   cd src/FinancasPessoais.API
-   dotnet restore
-   dotnet build
-   dotnet run
+   - cd src/FinancasPessoais.API
+   - dotnet restore
+   - dotnet build
+   - dotnet run
 
 O projeto será iniciado em https://localhost:5001 por padrão.
 
 **3.** Rodar via Docker Compose (opcional):
-   docker-compose up -d
+   - docker-compose up -d
 
 📌 **Contato**
 
