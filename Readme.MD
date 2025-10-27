@@ -1,11 +1,11 @@
 ﻿📊 # Finanças Pessoais API
 
-# Apresentação: Finanças Pessoais API é uma API RESTful desenvolvida em .NET 7, seguindo os princípios do Clean Architecture, para o gerenciamento de finanças pessoais como lançamento de receitas e despesas por categorias
+**Introdução**: Finanças Pessoais API é uma API RESTful desenvolvida em .NET 7, seguindo os princípios do Clean Architecture, para o gerenciamento de finanças pessoais como lançamento de receitas e despesas por categorias
 e subcategorias, gerenciamento de contas à pagar, lembrete de contas à pagar, etc.
 
 Além disso, uso este projeto para praticar meus conhecimentos em back-end e transformá-los em solução para uma necessidade que eu e outras pessoas possam ter. 
 
-🏛 # Arquitetura
+🏛 **Arquitetura**
 
 O projeto segue o padrão Clean Architecture, que garante:
 
@@ -23,7 +23,7 @@ Separação de responsabilidades por camada:
 
 - Tests: testes unitários e de integração. Serão desenvolvidos futuramente.
 
-⚡ # Funcionalidades
+⚡ **Funcionalidades**
 
 - CRUD de contas bancárias
 
@@ -35,13 +35,13 @@ Separação de responsabilidades por camada:
 
 - Cadastro de usuários e recuperação de senha (fluxo em desenvolvimento)
 
-🛠 # Pré-requisitos
+🛠 **Pré-requisitos**
 
 - .NET 7 SDK
 
 - SQL Server ou container Docker (opcional, para rodar via docker-compose)
 
-💻 # Como executar
+💻 **Como executar**
 
 1. Clonar o repositório:
    git clone https://github.com/danielft11/FinancasPessoais.git
@@ -58,7 +58,7 @@ O projeto será iniciado em https://localhost:5001 por padrão.
 3. Rodar via Docker Compose (opcional)
    docker-compose up -d
 
-🧰 #Estrutura do projeto
+🧰 **Estrutura do projeto**
 
 FinancasPessoais/
 │
@@ -72,7 +72,7 @@ FinancasPessoais/
 ├─ docker-compose.yml                  # Configuração de containers
 └─ README.md
 
-📌 # Contato
+📌 **Contato**
 
 - GitHub: danielft11
 - E-mail: danielft11@hotmail.com
