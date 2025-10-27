@@ -1,0 +1,33 @@
+services:
+
+  api:
+    build:
+      context: .
+      dockerfile: FinancasPessoais.Api/Dockerfile
+    container_name: financaspessoais_api
+    environment:
+      ConnectionStrings__DefaultConnection: "Server=sqlserver,1435;Database=FinancasPessoaisDB;User Id=sa;Password=StrongPassword@123!;Trusted_Connection=False;TrustServerCertificate=true"
+    depends_on:
+      - sqlserver
+    networks:
+      - backend
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    environment:
+      MSSQL_SA_PASSWORD: StrongPassword@123!
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1435:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    networks:
+      - backend
+
+volumes:
+  sqlserver_data:
+
+networks:
+  backend:
+    driver: bridge
