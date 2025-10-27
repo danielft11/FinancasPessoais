@@ -55,7 +55,7 @@ Separação de responsabilidades por camada:
 
 O projeto será iniciado em https://localhost:5001 por padrão.
 
-**3.** Rodar via Docker Compose (opcional)
+**3.** Rodar via Docker Compose (opcional):
    docker-compose up -d
 
 📌 **Contato**
