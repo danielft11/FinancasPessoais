@@ -43,11 +43,11 @@ Separação de responsabilidades por camada:
 
 💻 **Como executar**
 
-1. Clonar o repositório:
+**1.** Clonar o repositório:
    git clone https://github.com/danielft11/FinancasPessoais.git
    cd FinancasPessoais
 
-2. Rodar via .NET CLI:
+**2.** Rodar via .NET CLI:
    cd src/FinancasPessoais.API
    dotnet restore
    dotnet build
@@ -55,22 +55,8 @@ Separação de responsabilidades por camada:
 
 O projeto será iniciado em https://localhost:5001 por padrão.
 
-3. Rodar via Docker Compose (opcional)
+**3.** Rodar via Docker Compose (opcional)
    docker-compose up -d
-
-🧰 **Estrutura do projeto**
-
-FinancasPessoais/
-│
-├─ src/
-│   ├─ FinancasPessoais.API            # Camada de apresentação (endpoints)
-│   ├─ FinancasPessoais.Application    # Serviços e casos de uso
-│   ├─ FinancasPessoais.Domain         # Entidades e regras de negócio
-│   ├─ FinancasPessoais.Infra.Data     # Persistência
-│   └─ FinancasPessoais.Infra.IoC      # Injeção de Dependência e inversão de controle
-│
-├─ docker-compose.yml                  # Configuração de containers
-└─ README.md
 
 📌 **Contato**
 
