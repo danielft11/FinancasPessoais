@@ -40,6 +40,13 @@ namespace FinancasPessoais.Infra.Data.Identity
             return result.Succeeded;
         }
 
+        public async Task<bool> RegisterUser(ApplicationUser user)
+        {
+            var result = await _userManager.CreateAsync(user);
+
+            return result.Succeeded;
+        }
+
         public async Task<ApplicationUser> FindUserByEmail(string email) => await _userManager.FindByEmailAsync(email);
 
         public async Task<ApplicationUser> FindUserByName(string userName) => await _userManager.FindByNameAsync(userName);

@@ -10,10 +10,11 @@ using System;
 using System.Threading.Tasks;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Text;
 using FinancasPessoais.Application.Interfaces;
+using FinancasPessoais.Infra.Data.Identity;
+using Google.Apis.Auth;
 
 namespace FinancasPessoais.Api.Controllers
 {
@@ -72,6 +73,36 @@ namespace FinancasPessoais.Api.Controllers
             {
                 return BadRequest("Tentativa de login inválida: e-mail ou senha incorretos.");
             }
+        }
+
+        [HttpPost("Google-login")]
+        public async Task<IActionResult> GoogleLogin([FromBody] GoogleLoginRequest request)
+        {
+            var payload = await GoogleJsonWebSignature.ValidateAsync(request.IdToken);
+            
+            var user = await _authenticationService.FindUserByEmail(payload.Email);
+            if (user == null)
+            {
+                user = new ApplicationUser
+                {
+                    UserName = payload.Name,
+                    Email = payload.Email
+                };
+
+                var result = await _authenticationService.RegisterUser(user);
+            }
+
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            };
+
+            var token = TokenService.GenerateToken(claims);
+
+            return Ok(token);
+            
         }
 
         [Authorize]

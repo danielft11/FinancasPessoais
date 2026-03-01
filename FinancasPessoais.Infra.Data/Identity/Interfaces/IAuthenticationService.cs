@@ -7,6 +7,7 @@ namespace FinancasPessoais.Infra.Data.Identity.Interfaces
     {
         Task<bool> Login(string email, string password);
         Task<bool> RegisterUser(string email, string password);
+        Task<bool> RegisterUser(ApplicationUser user);
         Task Logout();
         Task<ApplicationUser> FindUserByEmail(string email);
         Task<ApplicationUser> FindUserByName(string userName);
