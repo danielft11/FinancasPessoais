@@ -49,6 +49,7 @@ namespace FinancasPessoais.Api.Controllers
 
                 var claims = new[]
                 {
+                    new Claim(ClaimTypes.PrimarySid, user.Id),
                     new Claim(ClaimTypes.Name, user.UserName),
                     new Claim(ClaimTypes.Email, request.Email),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())

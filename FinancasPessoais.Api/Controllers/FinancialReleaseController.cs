@@ -152,6 +152,8 @@ namespace FinancasPessoais.Api.Controllers
         {
             try
             {
+                var loggedUser = User.Identity;
+
                 var extract = await _accountService.GetExtractByAccountId(request);
                 if (extract == null)
                     return NotFound(Constants.EXTRACT_NOT_FOUND);
