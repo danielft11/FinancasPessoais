@@ -1,4 +1,4 @@
-﻿using FinancasPessoais.Api.Token;
+using FinancasPessoais.Api.Token;
 using FinancasPessoais.Application.DTOs.Requests;
 using FinancasPessoais.Application.DTOs.Responses;
 using FinancasPessoais.Infra.Data.Identity.Interfaces;
@@ -15,6 +15,7 @@ using System.Text;
 using FinancasPessoais.Application.Interfaces;
 using FinancasPessoais.Infra.Data.Identity;
 using Google.Apis.Auth;
+using Microsoft.AspNetCore.Identity;
 
 namespace FinancasPessoais.Api.Controllers
 {
@@ -46,7 +47,6 @@ namespace FinancasPessoais.Api.Controllers
             
             if (user != null && result)
             {
-
                 var claims = new[]
                 {
                     new Claim(ClaimTypes.PrimarySid, user.Id),
@@ -93,16 +93,35 @@ namespace FinancasPessoais.Api.Controllers
                 var result = await _authenticationService.RegisterUser(user);
             }
 
+            // Registrar login externo
+            var userLogin = await _authenticationService.FindUserByLoginAsync(payload.Subject);
+            if (userLogin == null)
+            {
+                await _authenticationService.RegisterLoginAsync(user, payload.Subject);
+            }
+
             var claims = new[]
             {
+                new Claim(ClaimTypes.PrimarySid, user.Id),
                 new Claim(ClaimTypes.Name, user.UserName),
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
             var token = TokenService.GenerateToken(claims);
+            var refreshToken = TokenService.GenerateRefreshToken();
+            
+            user.RefreshToken = refreshToken;
+            user.RefreshTokenExpirationTime = DateTime.Now.AddMinutes(60);
 
-            return Ok(token);
+            await _authenticationService.UpdateUser(user);
+
+            return Ok(new LoginResponse
+            {
+                Token = new JwtSecurityTokenHandler().WriteToken(token),
+                RefreshToken = refreshToken,
+                TokenExpirationTime = token.ValidTo
+            });
             
         }
 

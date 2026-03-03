@@ -7,9 +7,12 @@ using FinancasPessoais.Domain.Utils;
 using FinancasPessoais.Application.DTOs.Requests;
 using FinancasPessoais.Application.DTOs.Responses;
 using FinancasPessoais.Application.Factories.Abstract;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace FinancasPessoais.Api.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class FinancialReleaseController : ControllerBase
@@ -33,7 +36,7 @@ namespace FinancasPessoais.Api.Controllers
             _accountService = accountService;
             _creditCardService = creditCardService;
             _financialReleaseFactory = financialReleaseFactory;
-            _subCategoryService = subCategoryService;   
+            _subCategoryService = subCategoryService;
         }
 
         #endregion
@@ -152,7 +155,7 @@ namespace FinancasPessoais.Api.Controllers
         {
             try
             {
-                var loggedUser = User.Identity;
+                var userID = LoggedUserId();
 
                 var extract = await _accountService.GetExtractByAccountId(request);
                 if (extract == null)
@@ -232,6 +235,11 @@ namespace FinancasPessoais.Api.Controllers
         {
             return await _subCategoryService.GetByIdAsync(request.SubcategoryId) == null;
         }
+
+        private string LoggedUserId() 
+        {
+            return User.FindFirst(ClaimTypes.PrimarySid)?.Value;
+        } 
 
         #endregion
 

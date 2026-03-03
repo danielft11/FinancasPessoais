@@ -11,6 +11,8 @@ namespace FinancasPessoais.Infra.Data.Identity.Interfaces
         Task Logout();
         Task<ApplicationUser> FindUserByEmail(string email);
         Task<ApplicationUser> FindUserByName(string userName);
+        Task<ApplicationUser> FindUserByLoginAsync(string subject);
+        Task RegisterLoginAsync(ApplicationUser user, string subject);
         Task UpdateUser(ApplicationUser user);
         Task<string> GeneratePasswordResetTokenAsync(ApplicationUser user);
         Task<IdentityResult> ResetPasswordAsync(ApplicationUser user, string decodedToken, string newPassword);

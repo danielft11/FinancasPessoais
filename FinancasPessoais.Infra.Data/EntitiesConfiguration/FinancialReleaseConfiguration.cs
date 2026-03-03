@@ -1,4 +1,5 @@
 ﻿using FinancasPessoais.Domain.Entities;
+using FinancasPessoais.Infra.Data.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -52,6 +53,15 @@ namespace FinancasPessoais.Infra.Data.EntitiesConfiguration
                .HasOne(c => c.CreditCard)
                .WithMany(cr => cr.FinancialReleases)
                .HasForeignKey(cr => cr.CreditCardId);
+
+            /* Shadow Navigation, uma propriedade que existe apenas no banco de dados, mas não existe na classe de domínio.
+            /* Ela é usada para criar um relacionamento entre as entidades sem precisar adicionar uma propriedade de navegação 
+            na classe de domínio. */
+            builder
+                .HasOne<ApplicationUser>()
+                .WithMany()
+                .HasForeignKey(fr => fr.UserId)
+                .IsRequired(true);
         }
 
     }

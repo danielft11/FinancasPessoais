@@ -1,5 +1,7 @@
 ﻿using FinancasPessoais.Infra.Data.Identity.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using System;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace FinancasPessoais.Infra.Data.Identity
@@ -47,10 +49,21 @@ namespace FinancasPessoais.Infra.Data.Identity
             return result.Succeeded;
         }
 
+        public async Task RegisterLoginAsync(ApplicationUser user, string subject)
+        {
+            await _userManager.AddLoginAsync(user, new UserLoginInfo(
+                loginProvider: "Google",
+                providerKey: subject,
+                displayName: "Google"
+                ));
+        }
+
         public async Task<ApplicationUser> FindUserByEmail(string email) => await _userManager.FindByEmailAsync(email);
 
         public async Task<ApplicationUser> FindUserByName(string userName) => await _userManager.FindByNameAsync(userName);
 
+        public async Task<ApplicationUser> FindUserByLoginAsync(string subject) => await _userManager.FindByLoginAsync("Google", subject);
+        
         public async Task UpdateUser(ApplicationUser user) => await _userManager.UpdateAsync(user);
 
         public async Task<string> GeneratePasswordResetTokenAsync(ApplicationUser user) => await _userManager.GeneratePasswordResetTokenAsync(user);
