@@ -82,13 +82,13 @@ namespace FinancasPessoais.Application.Services
             return await _accountRepository.GetByIdAsync(id);
         }
 
-        public async Task<IEnumerable<ExtractResponseDTO>> GetExtractByAccountId(ExtractRequestDTO extractRequest) 
+        public async Task<IEnumerable<ExtractResponseDTO>> GetExtractByAccountId(ExtractRequestDTO extractRequest, string userID) 
         {
             var extracts = new List<ExtractResponseDTO>();
             
             DateTime cutoffDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day).AddDays(-extractRequest.Period);
 
-            var financialReleases = await _financialReleaseRepository.GetFinancialReleasesByAccountIdAsync(extractRequest.AccountID);
+            var financialReleases = await _financialReleaseRepository.GetFinancialReleasesByAccountIdAsync(extractRequest.AccountID, userID);
             if (financialReleases != null && financialReleases.Any()) 
             {
                 var balanceBeforePeriod = GetBalanceBeforePeriod(financialReleases, cutoffDate);
@@ -107,9 +107,9 @@ namespace FinancasPessoais.Application.Services
           
         }
 
-        public async Task<IEnumerable<ExtractResponseDTO>> GetMonthlyExtractByAccountId(MonthlyExtractRequestDTO request)
+        public async Task<IEnumerable<ExtractResponseDTO>> GetMonthlyExtractByAccountId(MonthlyExtractRequestDTO request, string userID)
         {
-            var financialReleases = await _financialReleaseRepository.GetMonthlyExtractByAccountIdAsync(request.AccountID, request.firstDay, request.lastDay);
+            var financialReleases = await _financialReleaseRepository.GetMonthlyExtractByAccountIdAsync(request.AccountID, request.firstDay, request.lastDay, userID);
              return financialReleases.Select(financialRelease => new ExtractResponseDTO
              {
                  Type = financialRelease.Type == ReleaseTypes.Income ? "Receita" : "Despesa",

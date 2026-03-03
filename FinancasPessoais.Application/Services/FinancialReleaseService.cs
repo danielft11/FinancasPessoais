@@ -45,9 +45,10 @@ namespace FinancasPessoais.Application.Services
             });
         }
 
-        public async Task<FinancialReleaseResponseDTO> CreateFinancialReleaseAsync(FinancialReleaseRequestDTO financialReleaseDTO)
+        public async Task<FinancialReleaseResponseDTO> CreateFinancialReleaseAsync(FinancialReleaseRequestDTO financialReleaseDTO, string userID)
         {
             var financialRelease = _mapper.Map<FinancialRelease>(financialReleaseDTO);
+            financialRelease.UserId = userID;
 
             if (financialReleaseDTO.Type == ReleaseTypes.Expense && financialReleaseDTO.AccountId != null)
                 financialRelease.PaymentDate = financialReleaseDTO.ReleaseDate;

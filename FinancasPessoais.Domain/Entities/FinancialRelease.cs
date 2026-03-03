@@ -23,7 +23,7 @@ namespace FinancasPessoais.Domain.Entities
         public Guid? PurchaseInInstallmentsId { get; set; }
         public PurchaseInInstallments PurchaseInInstallments { get; set; }
 
-        public string UserId { get; private set; }
+        public string UserId { get; set; }
 
         public FinancialRelease(DateTime releaseDate, decimal value, string description, Guid subcategoryId, Guid? creditCardId)
         {

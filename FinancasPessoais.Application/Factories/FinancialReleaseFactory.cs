@@ -27,26 +27,25 @@ namespace FinancasPessoais.Application.Factories
 
         #endregion
 
-        public async Task<FinancialReleaseResponseDTO> CreateExpenseOnAccount(FinancialReleaseRequestDTO request)
+        public async Task<FinancialReleaseResponseDTO> CreateFinancialReleaseAsync(FinancialReleaseRequestDTO request, string userID)
         {
-            var account = await _accountService.GetAccountByIdAsync(request.AccountId.GetValueOrDefault());
-            if (account == null)
-                throw new Exception(Constants.EntityNotExistError(Operations.Insert, "lançamento financeiro", "conta"));
+            if (request.AccountId != null)
+            {
+                var account = await _accountService.GetAccountByIdAsync(request.AccountId.GetValueOrDefault());
+                if (account == null)
+                    throw new Exception(Constants.EntityNotExistError(Operations.Insert, "lançamento financeiro", "conta"));
 
-            if (ReleaseAmountGreaterThanAccountBalance(request, account.Balance))
-                throw new Exception(Constants.AMOUNT_GREATHER_THAN_ACCOUNT_BALANCE);
-
-            return await _financialReleaseService.CreateFinancialReleaseAsync(request);
-
-        }
-
-        public async Task<FinancialReleaseResponseDTO> CreateExpenseOnCreditCard(FinancialReleaseRequestDTO request)
-        {
-            var creditCard = await _creditCardService.GetCreditCardByIdAsync(request.CreditCardId.GetValueOrDefault());
-            if (creditCard == null)
-                throw new Exception(Constants.EntityNotExistError(Operations.Insert, "despesa em cartão de crédito", "Cartão de Crédito"));
-
-            return await _financialReleaseService.CreateFinancialReleaseAsync(request);
+                if (ReleaseAmountGreaterThanAccountBalance(request, account.Balance))
+                    throw new Exception(Constants.AMOUNT_GREATHER_THAN_ACCOUNT_BALANCE);
+            }
+            else 
+            {
+                var creditCard = await _creditCardService.GetCreditCardByIdAsync(request.CreditCardId.GetValueOrDefault());
+                if (creditCard == null)
+                    throw new Exception(Constants.EntityNotExistError(Operations.Insert, "despesa em cartão de crédito", "Cartão de Crédito"));
+            }
+            
+            return await _financialReleaseService.CreateFinancialReleaseAsync(request, userID);
         }
 
         public async Task<PurchaseInInstallmentsResponseDTO> CreateInstallmentPurchaseOnCreditCard(PurchaseInInstallmentsRequestDTO request)

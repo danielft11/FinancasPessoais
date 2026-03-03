@@ -14,10 +14,10 @@ namespace FinancasPessoais.Infra.Data.Repositories
     {
         public FinancialReleaseRepository(ApplicationDbContext context) : base(context) { }
 
-        public async Task<IEnumerable<FinancialRelease>> GetFinancialReleasesByAccountIdAsync(Guid accountId)
+        public async Task<IEnumerable<FinancialRelease>> GetFinancialReleasesByAccountIdAsync(Guid accountId, string userID)
         {
             return await _context.FinancialReleases
-                .Where(f => f.AccountId == accountId)
+                .Where(f => f.AccountId == accountId && f.UserId == userID)
                 .Include(f => f.Subcategory)
                 .ThenInclude(f => f.Category)
                 .OrderBy(f => f.ReleaseDate)
@@ -31,10 +31,10 @@ namespace FinancasPessoais.Infra.Data.Repositories
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<FinancialRelease>> GetMonthlyExtractByAccountIdAsync(Guid accountId, DateTime firstDay, DateTime lastDay)
+        public async Task<IEnumerable<FinancialRelease>> GetMonthlyExtractByAccountIdAsync(Guid accountId, DateTime firstDay, DateTime lastDay, string userID)
         {
             return await _context.FinancialReleases
-                .Where(f => f.AccountId == accountId && f.ReleaseDate >= firstDay && f.ReleaseDate <= lastDay.AddHours(23).AddMinutes(55))
+                .Where(f => f.AccountId == accountId && f.ReleaseDate >= firstDay && f.ReleaseDate <= lastDay.AddHours(23).AddMinutes(55) && f.UserId == userID)
                 .Include(f => f.Subcategory)
                 .ThenInclude(f => f.Category)
                 .OrderByDescending(f => f.ReleaseDate)

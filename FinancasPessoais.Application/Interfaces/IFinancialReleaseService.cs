@@ -11,7 +11,7 @@ namespace FinancasPessoais.Application.Interfaces
     {
         Task<FinancialReleaseResponseDTO> GetFinancialReleaseByIdAsync(Guid id);
         Task<IEnumerable<CreditCardReleaseResponseDTO>> GetInvoiceByCreditCardId(Guid creditCardId, DateTime firstDay, DateTime lastDay);
-        Task<FinancialReleaseResponseDTO> CreateFinancialReleaseAsync(FinancialReleaseRequestDTO financialReleaseDTO);
+        Task<FinancialReleaseResponseDTO> CreateFinancialReleaseAsync(FinancialReleaseRequestDTO financialReleaseDTO, string userID);
         Task<PurchaseInInstallmentsResponseDTO> CreatePurchaseInInstallmentsAsync(PurchaseInInstallmentsRequestDTO request, CreditCard creditCard);
         Task PayCreditCardRelease(CreditCardReleasePaymentRequestDTO request);
     }

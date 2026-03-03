@@ -9,8 +9,7 @@ namespace FinancasPessoais.Application.Factories.Abstract
 {
     public interface IFinancialReleaseFactory
     {
-        Task<FinancialReleaseResponseDTO> CreateExpenseOnAccount(FinancialReleaseRequestDTO request);
-        Task<FinancialReleaseResponseDTO> CreateExpenseOnCreditCard(FinancialReleaseRequestDTO request);
+        Task<FinancialReleaseResponseDTO> CreateFinancialReleaseAsync(FinancialReleaseRequestDTO request, string userID);
         Task<PurchaseInInstallmentsResponseDTO> CreateInstallmentPurchaseOnCreditCard(PurchaseInInstallmentsRequestDTO request);
         Task<FinancialReleaseResponseDTO> GetFinancialReleaseByIdAsync(Guid id);
         Task<IEnumerable<CreditCardReleaseResponseDTO>> GetInvoiceByCreditCardId(CreditCard creditCard);

@@ -23,7 +23,7 @@ namespace FinancasPessoais.Application.Interfaces
         Task<FinancialReleaseResponseDTO> UpdateFinancialReleaseAsync(FinancialReleaseRequestDTO financialReleaseDTO);
         Task<FinancialReleaseResponseDTO> RemoveFinancialReleaseAsync(FinancialReleaseRequestDTO financialReleaseDTO);
         Task<decimal> GetTotalIncomeExpenseByAccountIdAsync(Guid accountId, ReleaseTypes type);
-        Task<IEnumerable<ExtractResponseDTO>> GetExtractByAccountId(ExtractRequestDTO extractRequest);
-        Task<IEnumerable<ExtractResponseDTO>> GetMonthlyExtractByAccountId(MonthlyExtractRequestDTO request);
+        Task<IEnumerable<ExtractResponseDTO>> GetExtractByAccountId(ExtractRequestDTO extractRequest, string userID);
+        Task<IEnumerable<ExtractResponseDTO>> GetMonthlyExtractByAccountId(MonthlyExtractRequestDTO request, string userID);
     }
 }

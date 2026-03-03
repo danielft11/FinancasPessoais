@@ -5,7 +5,6 @@ using System;
 using FinancasPessoais.Application.Interfaces;
 using FinancasPessoais.Domain.Utils;
 using FinancasPessoais.Application.DTOs.Requests;
-using FinancasPessoais.Application.DTOs.Responses;
 using FinancasPessoais.Application.Factories.Abstract;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
@@ -75,13 +74,9 @@ namespace FinancasPessoais.Api.Controllers
 
             try
             {
-                var financialReleaseResponseDTO = new FinancialReleaseResponseDTO();
-                
-                if (request.AccountId != null)
-                    financialReleaseResponseDTO = await _financialReleaseFactory.CreateExpenseOnAccount(request);
-                else
-                    financialReleaseResponseDTO = await _financialReleaseFactory.CreateExpenseOnCreditCard(request);
-                    
+                var userID = LoggedUserId();
+                var financialReleaseResponseDTO = await _financialReleaseFactory.CreateFinancialReleaseAsync(request, userID);
+
                 return Created(string.Empty, financialReleaseResponseDTO);
             }
             catch (Exception ex)
@@ -157,7 +152,7 @@ namespace FinancasPessoais.Api.Controllers
             {
                 var userID = LoggedUserId();
 
-                var extract = await _accountService.GetExtractByAccountId(request);
+                var extract = await _accountService.GetExtractByAccountId(request, userID);
                 if (extract == null)
                     return NotFound(Constants.EXTRACT_NOT_FOUND);
 
@@ -180,7 +175,9 @@ namespace FinancasPessoais.Api.Controllers
         {
             try
             {
-                var extract = await _accountService.GetMonthlyExtractByAccountId(request);
+                var userID = LoggedUserId();
+
+                var extract = await _accountService.GetMonthlyExtractByAccountId(request, userID);
                 return Ok(extract);
             }
             catch (InvalidRequestException ex)
