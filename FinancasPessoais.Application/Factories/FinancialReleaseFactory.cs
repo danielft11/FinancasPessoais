@@ -69,6 +69,8 @@ namespace FinancasPessoais.Application.Factories
 
         public async Task PayCreditCardRelease(CreditCardReleasePaymentRequestDTO request) => await _financialReleaseService.PayCreditCardRelease(request);
 
+        public async Task DeleteFinancialReleaseAsync(Guid id, string userID) => await _financialReleaseService.DeleteFinancialReleaseAsync(id, userID);
+
         private static bool ReleaseAmountGreaterThanAccountBalance(FinancialReleaseRequestDTO request, decimal balance)
         {
             return request.Type == ReleaseTypes.Expense && request.Value > balance;

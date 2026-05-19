@@ -72,5 +72,17 @@ namespace FinancasPessoais.Application.Services
             await _financialReleaseRepository.PayCreditCardRelease(request.Id, request.PaymentDate, request.AccountId);
         }
 
+        public async Task DeleteFinancialReleaseAsync(Guid id, string userID)
+        {
+            var financialRelease = await _financialReleaseRepository.GetByIdAsync(id);
+            if (financialRelease == null)
+                throw new KeyNotFoundException();
+
+            if (financialRelease.UserId != userID)
+                throw new UnauthorizedAccessException();
+
+            await _financialReleaseRepository.RemoveAsync(financialRelease);
+        }
+
     }
 }

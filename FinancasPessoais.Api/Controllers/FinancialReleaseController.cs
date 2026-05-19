@@ -7,6 +7,7 @@ using FinancasPessoais.Domain.Utils;
 using FinancasPessoais.Application.DTOs.Requests;
 using FinancasPessoais.Application.Factories.Abstract;
 using Microsoft.AspNetCore.Authorization;
+using System.Collections.Generic;
 using System.Security.Claims;
 
 namespace FinancasPessoais.Api.Controllers
@@ -187,6 +188,30 @@ namespace FinancasPessoais.Api.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex.InnerException.Message); // Retorna uma mensagem de erro genérica para outras exceções
+            }
+        }
+
+        [HttpDelete]
+        [Route("deleteFinancialRelease/{id:Guid}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> DeleteFinancialRelease(Guid id)
+        {
+            try
+            {
+                var userID = LoggedUserId();
+                
+                await _financialReleaseFactory.DeleteFinancialReleaseAsync(id, userID);
+                return NoContent();
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound(Constants.EntityNotFound("Financial Release"));
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return Forbid();
             }
         }
 

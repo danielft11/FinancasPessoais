@@ -14,5 +14,6 @@ namespace FinancasPessoais.Application.Factories.Abstract
         Task<FinancialReleaseResponseDTO> GetFinancialReleaseByIdAsync(Guid id);
         Task<IEnumerable<CreditCardReleaseResponseDTO>> GetInvoiceByCreditCardId(CreditCard creditCard);
         Task PayCreditCardRelease(CreditCardReleasePaymentRequestDTO request);
+        Task DeleteFinancialReleaseAsync(Guid id, string userID);
     }
 }
