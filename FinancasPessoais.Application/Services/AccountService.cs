@@ -185,7 +185,9 @@ namespace FinancasPessoais.Application.Services
                     ReleaseDate = release.ReleaseDate,
                     Value = release.Value,
                     Description = release.Description,
-                    Category = release.Subcategory.Category.Name
+                    Category = release.Subcategory.Category.Name,
+                    Subcategory = release.Subcategory.Name,
+                    Account = release.Account.Name
                 });
             }
         }

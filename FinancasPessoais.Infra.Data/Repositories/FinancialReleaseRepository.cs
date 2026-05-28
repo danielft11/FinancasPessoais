@@ -14,14 +14,25 @@ namespace FinancasPessoais.Infra.Data.Repositories
     {
         public FinancialReleaseRepository(ApplicationDbContext context) : base(context) { }
 
-        public async Task<IEnumerable<FinancialRelease>> GetFinancialReleasesByAccountIdAsync(Guid accountId, string userID)
+        public async Task<IEnumerable<FinancialRelease>> GetFinancialReleasesByAccountIdAsync(Guid? accountId, string userID)
         {
-            return await _context.FinancialReleases
-                .Where(f => f.AccountId == accountId && f.UserId == userID)
+            IQueryable<FinancialRelease> financialReleases = _context.FinancialReleases
                 .Include(f => f.Subcategory)
                 .ThenInclude(f => f.Category)
+                .Include(f => f.Account);
+
+            if (accountId is null || accountId == Guid.Empty)
+            {
+                financialReleases = financialReleases.Where(f => f.UserId == userID);
+            }
+            else 
+            {
+                financialReleases = financialReleases.Where(f => f.AccountId == accountId && f.UserId == userID);
+            }
+
+            return await financialReleases
                 .OrderBy(f => f.ReleaseDate)
-                .ToListAsync();   
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<FinancialRelease>> GetCreditCardReleasesByCreditCardIdAsync(Guid creditCardId, DateTime closingDate)
