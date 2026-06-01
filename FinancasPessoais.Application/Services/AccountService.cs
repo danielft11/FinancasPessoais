@@ -82,7 +82,7 @@ namespace FinancasPessoais.Application.Services
             return await _accountRepository.GetByIdAsync(id);
         }
 
-        public async Task<IEnumerable<ExtractResponseDTO>> GetExtractByAccountId(ExtractRequestDTO extractRequest, string userID) 
+        public async Task<IEnumerable<ExtractGroupedByReleaseDateResponseDTO>> GetExtractByAccountId(ExtractRequestDTO extractRequest, string userID) 
         {
             var extracts = new List<ExtractResponseDTO>();
             
@@ -99,8 +99,13 @@ namespace FinancasPessoais.Application.Services
                 GetReleasesInsidePeriod(releases, cutoffDate, extracts);
 
                 GetBalanceOfTheDay(balanceBeforePeriod, releases, extracts);
+
+                return extracts.GroupBy(e => e.ReleaseDate.Date).Select(g => new ExtractGroupedByReleaseDateResponseDTO 
+                {
+                    ReleaseDate = g.Key,
+                    Releases = g.ToList()
+                });
                 
-                return extracts;
             }
 
             return null;
