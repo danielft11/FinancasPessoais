@@ -45,7 +45,8 @@ namespace FinancasPessoais.Domain.Entities
 
         private void ValidateDomain(string code, string name, ReleaseTypes type, string description) 
         {
-            DomainExceptionValidation.When(code.Length != 2, Constants.InvalidFieldNumberCharacters(code, 2));
+            DomainExceptionValidation.When(name.Length < 2, Constants.InvalidFieldMinimumCharacters(code, 2));
+            DomainExceptionValidation.When(code.Length > 10, Constants.InvalidFieldMaximumCharacters(code, 10));
             DomainExceptionValidation.When(string.IsNullOrEmpty(name), Constants.FieldRequired(name));
             DomainExceptionValidation.When(name.Length < 2, Constants.InvalidFieldMinimumCharacters(name, 2));
             DomainExceptionValidation.When(name.Length > 50, Constants.InvalidFieldMaximumCharacters(name, 50));

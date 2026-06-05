@@ -9,7 +9,7 @@ namespace FinancasPessoais.Application.DTOs.Requests
     {
         [Required(ErrorMessage = "The codigo is required")]
         [MinLength(2, ErrorMessage = "The codigo must be 2 characters long.")]
-        [MaxLength(2, ErrorMessage = "The codigo must be 2 characters long.")]
+        [MaxLength(10, ErrorMessage = "The codigo must be 10 characters long.")]
         [JsonPropertyName("codigo")]
         public string Code { get; set; }
 

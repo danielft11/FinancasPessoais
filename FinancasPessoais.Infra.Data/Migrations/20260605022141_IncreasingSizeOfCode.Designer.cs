@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinancasPessoais.Infra.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260605013341_RemovingEntitySubcategory")]
-    partial class RemovingEntitySubcategory
+    [Migration("20260605022141_IncreasingSizeOfCode")]
+    partial class IncreasingSizeOfCode
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -53,7 +53,7 @@ namespace FinancasPessoais.Infra.Data.Migrations
                             Id = new Guid("5a7dd7d1-0fc2-4606-8ed2-5a32311e321e"),
                             AccountNumber = "278499",
                             BankBranch = "5611",
-                            CreationDate = new DateTime(2026, 6, 4, 22, 33, 41, 266, DateTimeKind.Local).AddTicks(9184),
+                            CreationDate = new DateTime(2026, 6, 4, 23, 21, 41, 233, DateTimeKind.Local).AddTicks(6347),
                             Name = "Itaú"
                         },
                         new
@@ -61,7 +61,7 @@ namespace FinancasPessoais.Infra.Data.Migrations
                             Id = new Guid("a9d03220-ddea-45a0-bf2b-be3075b3c7c0"),
                             AccountNumber = "000007181",
                             BankBranch = "0081",
-                            CreationDate = new DateTime(2026, 6, 4, 22, 33, 41, 268, DateTimeKind.Local).AddTicks(4274),
+                            CreationDate = new DateTime(2026, 6, 4, 23, 21, 41, 235, DateTimeKind.Local).AddTicks(2906),
                             Name = "Caixa"
                         });
                 });
@@ -117,8 +117,8 @@ namespace FinancasPessoais.Infra.Data.Migrations
 
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasMaxLength(2)
-                        .HasColumnType("nvarchar(2)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
@@ -150,7 +150,7 @@ namespace FinancasPessoais.Infra.Data.Migrations
                         {
                             Id = new Guid("0e3d619d-9e30-4de1-a43a-82aca124e259"),
                             Code = "A1",
-                            CreationDate = new DateTime(2026, 6, 4, 22, 33, 41, 271, DateTimeKind.Local).AddTicks(4807),
+                            CreationDate = new DateTime(2026, 6, 4, 23, 21, 41, 238, DateTimeKind.Local).AddTicks(5868),
                             Description = "Alimentação",
                             Name = "Alimentação",
                             Type = 1
@@ -159,7 +159,7 @@ namespace FinancasPessoais.Infra.Data.Migrations
                         {
                             Id = new Guid("1e1430da-a3a8-4c0a-a9d6-bc7057ec52f7"),
                             Code = "R1",
-                            CreationDate = new DateTime(2026, 6, 4, 22, 33, 41, 271, DateTimeKind.Local).AddTicks(7514),
+                            CreationDate = new DateTime(2026, 6, 4, 23, 21, 41, 238, DateTimeKind.Local).AddTicks(9242),
                             Description = "Salário",
                             Name = "Salário",
                             Type = 0
@@ -168,7 +168,7 @@ namespace FinancasPessoais.Infra.Data.Migrations
                         {
                             Id = new Guid("a6611ff8-9866-486d-a13c-3b816e3a5d19"),
                             Code = "R2",
-                            CreationDate = new DateTime(2026, 6, 4, 22, 33, 41, 271, DateTimeKind.Local).AddTicks(7543),
+                            CreationDate = new DateTime(2026, 6, 4, 23, 21, 41, 238, DateTimeKind.Local).AddTicks(9278),
                             Description = "Serviços",
                             Name = "Serviços",
                             Type = 0
@@ -177,7 +177,7 @@ namespace FinancasPessoais.Infra.Data.Migrations
                         {
                             Id = new Guid("af5c3c93-9724-49ed-97cb-e8a385eedaae"),
                             Code = "R3",
-                            CreationDate = new DateTime(2026, 6, 4, 22, 33, 41, 271, DateTimeKind.Local).AddTicks(7555),
+                            CreationDate = new DateTime(2026, 6, 4, 23, 21, 41, 238, DateTimeKind.Local).AddTicks(9288),
                             Description = "Empréstimo - Recebimento",
                             Name = "Empréstimo - Recebimento",
                             Type = 0
@@ -186,7 +186,7 @@ namespace FinancasPessoais.Infra.Data.Migrations
                         {
                             Id = new Guid("effe2b1f-b5fc-4ce3-8306-084e7759d20c"),
                             Code = "R4",
-                            CreationDate = new DateTime(2026, 6, 4, 22, 33, 41, 271, DateTimeKind.Local).AddTicks(7562),
+                            CreationDate = new DateTime(2026, 6, 4, 23, 21, 41, 238, DateTimeKind.Local).AddTicks(9342),
                             Description = "Outras Receitas",
                             Name = "Outras Receitas",
                             Type = 0
@@ -233,7 +233,7 @@ namespace FinancasPessoais.Infra.Data.Migrations
                             CardLimit = 15000m,
                             CardName = "Itaucard Click Final 9289",
                             CardNumber = "5316805324229289",
-                            CreationDate = new DateTime(2026, 6, 4, 22, 33, 41, 275, DateTimeKind.Local).AddTicks(6535),
+                            CreationDate = new DateTime(2026, 6, 4, 23, 21, 41, 243, DateTimeKind.Local).AddTicks(5469),
                             InvoiceClosingDate = 2,
                             InvoiceDueDate = 9
                         });

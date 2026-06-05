@@ -17,7 +17,10 @@ namespace FinancasPessoais.Infra.Data.Context
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-            Database.EnsureCreated();
+            // Com essa linha não é necessário executar o comando Update-Database no
+            // Package Manager Console para criar o banco de dados e aplicar as migrações, 
+            // pois isso é feito automaticamente.
+            Database.Migrate();
         }
 
         public ApplicationDbContext() { }

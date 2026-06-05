@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinancasPessoais.Infra.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260302010258_InitialMigration")]
+    [Migration("20260605021721_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -53,7 +53,7 @@ namespace FinancasPessoais.Infra.Data.Migrations
                             Id = new Guid("5a7dd7d1-0fc2-4606-8ed2-5a32311e321e"),
                             AccountNumber = "278499",
                             BankBranch = "5611",
-                            CreationDate = new DateTime(2026, 3, 1, 22, 2, 42, 577, DateTimeKind.Local).AddTicks(4342),
+                            CreationDate = new DateTime(2026, 6, 4, 23, 17, 20, 704, DateTimeKind.Local).AddTicks(5044),
                             Name = "Itaú"
                         },
                         new
@@ -61,7 +61,7 @@ namespace FinancasPessoais.Infra.Data.Migrations
                             Id = new Guid("a9d03220-ddea-45a0-bf2b-be3075b3c7c0"),
                             AccountNumber = "000007181",
                             BankBranch = "0081",
-                            CreationDate = new DateTime(2026, 3, 1, 22, 2, 42, 579, DateTimeKind.Local).AddTicks(9950),
+                            CreationDate = new DateTime(2026, 6, 4, 23, 17, 20, 706, DateTimeKind.Local).AddTicks(1812),
                             Name = "Caixa"
                         });
                 });
@@ -74,6 +74,9 @@ namespace FinancasPessoais.Infra.Data.Migrations
 
                     b.Property<string>("BarCode")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
@@ -95,16 +98,13 @@ namespace FinancasPessoais.Infra.Data.Migrations
                     b.Property<DateTime>("ScheduleDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("SubcategoryId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<decimal>("Value")
                         .HasPrecision(10, 2)
                         .HasColumnType("decimal(10,2)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SubcategoryId");
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("AccountsPayable");
                 });
@@ -132,20 +132,34 @@ namespace FinancasPessoais.Infra.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<Guid?>("ParentCategoryId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("Type")
                         .HasMaxLength(7)
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ParentCategoryId");
+
                     b.ToTable("Categories");
 
                     b.HasData(
                         new
                         {
+                            Id = new Guid("0e3d619d-9e30-4de1-a43a-82aca124e259"),
+                            Code = "A1",
+                            CreationDate = new DateTime(2026, 6, 4, 23, 17, 20, 709, DateTimeKind.Local).AddTicks(1192),
+                            Description = "Alimentação",
+                            Name = "Alimentação",
+                            Type = 1
+                        },
+                        new
+                        {
                             Id = new Guid("1e1430da-a3a8-4c0a-a9d6-bc7057ec52f7"),
                             Code = "R1",
-                            CreationDate = new DateTime(2026, 3, 1, 22, 2, 42, 582, DateTimeKind.Local).AddTicks(3320),
+                            CreationDate = new DateTime(2026, 6, 4, 23, 17, 20, 709, DateTimeKind.Local).AddTicks(3878),
                             Description = "Salário",
                             Name = "Salário",
                             Type = 0
@@ -154,7 +168,7 @@ namespace FinancasPessoais.Infra.Data.Migrations
                         {
                             Id = new Guid("a6611ff8-9866-486d-a13c-3b816e3a5d19"),
                             Code = "R2",
-                            CreationDate = new DateTime(2026, 3, 1, 22, 2, 42, 582, DateTimeKind.Local).AddTicks(7706),
+                            CreationDate = new DateTime(2026, 6, 4, 23, 17, 20, 709, DateTimeKind.Local).AddTicks(3905),
                             Description = "Serviços",
                             Name = "Serviços",
                             Type = 0
@@ -163,7 +177,7 @@ namespace FinancasPessoais.Infra.Data.Migrations
                         {
                             Id = new Guid("af5c3c93-9724-49ed-97cb-e8a385eedaae"),
                             Code = "R3",
-                            CreationDate = new DateTime(2026, 3, 1, 22, 2, 42, 582, DateTimeKind.Local).AddTicks(7735),
+                            CreationDate = new DateTime(2026, 6, 4, 23, 17, 20, 709, DateTimeKind.Local).AddTicks(3916),
                             Description = "Empréstimo - Recebimento",
                             Name = "Empréstimo - Recebimento",
                             Type = 0
@@ -172,19 +186,10 @@ namespace FinancasPessoais.Infra.Data.Migrations
                         {
                             Id = new Guid("effe2b1f-b5fc-4ce3-8306-084e7759d20c"),
                             Code = "R4",
-                            CreationDate = new DateTime(2026, 3, 1, 22, 2, 42, 582, DateTimeKind.Local).AddTicks(7744),
+                            CreationDate = new DateTime(2026, 6, 4, 23, 17, 20, 709, DateTimeKind.Local).AddTicks(3932),
                             Description = "Outras Receitas",
                             Name = "Outras Receitas",
                             Type = 0
-                        },
-                        new
-                        {
-                            Id = new Guid("0e3d619d-9e30-4de1-a43a-82aca124e259"),
-                            Code = "A1",
-                            CreationDate = new DateTime(2026, 3, 1, 22, 2, 42, 582, DateTimeKind.Local).AddTicks(7752),
-                            Description = "Alimentação",
-                            Name = "Alimentação",
-                            Type = 1
                         });
                 });
 
@@ -228,7 +233,7 @@ namespace FinancasPessoais.Infra.Data.Migrations
                             CardLimit = 15000m,
                             CardName = "Itaucard Click Final 9289",
                             CardNumber = "5316805324229289",
-                            CreationDate = new DateTime(2026, 3, 1, 22, 2, 42, 592, DateTimeKind.Local).AddTicks(8404),
+                            CreationDate = new DateTime(2026, 6, 4, 23, 17, 20, 713, DateTimeKind.Local).AddTicks(2303),
                             InvoiceClosingDate = 2,
                             InvoiceDueDate = 9
                         });
@@ -241,6 +246,9 @@ namespace FinancasPessoais.Infra.Data.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("AccountId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CategoryId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreationDate")
@@ -263,9 +271,6 @@ namespace FinancasPessoais.Infra.Data.Migrations
                     b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("SubcategoryId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("Type")
                         .HasMaxLength(7)
                         .HasColumnType("int");
@@ -282,11 +287,11 @@ namespace FinancasPessoais.Infra.Data.Migrations
 
                     b.HasIndex("AccountId");
 
+                    b.HasIndex("CategoryId");
+
                     b.HasIndex("CreditCardId");
 
                     b.HasIndex("PurchaseInInstallmentsId");
-
-                    b.HasIndex("SubcategoryId");
 
                     b.HasIndex("UserId");
 
@@ -297,6 +302,9 @@ namespace FinancasPessoais.Infra.Data.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CategoryId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("ClosingDate")
@@ -323,150 +331,13 @@ namespace FinancasPessoais.Infra.Data.Migrations
                         .HasPrecision(10, 2)
                         .HasColumnType("decimal(10,2)");
 
-                    b.Property<Guid>("SubcategoryId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreditCardId");
-
-                    b.HasIndex("SubcategoryId");
-
-                    b.ToTable("PurchaseInInstallments");
-                });
-
-            modelBuilder.Entity("FinancasPessoais.Domain.Entities.Subcategory", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CategoryId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(5)
-                        .HasColumnType("nvarchar(5)");
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Subcategories");
+                    b.HasIndex("CreditCardId");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("2b89b6ef-8751-4b37-8610-ca2f05354199"),
-                            CategoryId = new Guid("1e1430da-a3a8-4c0a-a9d6-bc7057ec52f7"),
-                            Code = "R1001",
-                            CreationDate = new DateTime(2026, 3, 1, 22, 2, 42, 586, DateTimeKind.Local).AddTicks(1782),
-                            Description = "Salário",
-                            Name = "Salário"
-                        },
-                        new
-                        {
-                            Id = new Guid("ad4a83ea-5f19-4b99-a51e-87e3e4d57531"),
-                            CategoryId = new Guid("1e1430da-a3a8-4c0a-a9d6-bc7057ec52f7"),
-                            Code = "R1002",
-                            CreationDate = new DateTime(2026, 3, 1, 22, 2, 42, 586, DateTimeKind.Local).AddTicks(4998),
-                            Description = "13º salário",
-                            Name = "13º salário"
-                        },
-                        new
-                        {
-                            Id = new Guid("28419dcf-3fb8-446c-83f3-04333185f3e5"),
-                            CategoryId = new Guid("a6611ff8-9866-486d-a13c-3b816e3a5d19"),
-                            Code = "R2001",
-                            CreationDate = new DateTime(2026, 3, 1, 22, 2, 42, 586, DateTimeKind.Local).AddTicks(5024),
-                            Description = "Mão-de-obra",
-                            Name = "Mão-de-obra"
-                        },
-                        new
-                        {
-                            Id = new Guid("075a3fbd-199e-4753-8866-0909cc033e46"),
-                            CategoryId = new Guid("a6611ff8-9866-486d-a13c-3b816e3a5d19"),
-                            Code = "R2002",
-                            CreationDate = new DateTime(2026, 3, 1, 22, 2, 42, 586, DateTimeKind.Local).AddTicks(5034),
-                            Description = "Venda de peças",
-                            Name = "Venda de peças"
-                        },
-                        new
-                        {
-                            Id = new Guid("4c6f2c59-e03b-4ed3-8bea-96a7b9067cb6"),
-                            CategoryId = new Guid("a6611ff8-9866-486d-a13c-3b816e3a5d19"),
-                            Code = "R2003",
-                            CreationDate = new DateTime(2026, 3, 1, 22, 2, 42, 586, DateTimeKind.Local).AddTicks(5108),
-                            Description = "Revenda de peças",
-                            Name = "Revenda de peças"
-                        },
-                        new
-                        {
-                            Id = new Guid("44a8faf1-d11e-45be-89a7-755e1adcbb39"),
-                            CategoryId = new Guid("af5c3c93-9724-49ed-97cb-e8a385eedaae"),
-                            Code = "R3001",
-                            CreationDate = new DateTime(2026, 3, 1, 22, 2, 42, 586, DateTimeKind.Local).AddTicks(5121),
-                            Description = "Empréstimo - Recebimento",
-                            Name = "Empréstimo - Recebimento"
-                        },
-                        new
-                        {
-                            Id = new Guid("fbacb127-fb7e-4a58-997a-2aa5d2c689e1"),
-                            CategoryId = new Guid("effe2b1f-b5fc-4ce3-8306-084e7759d20c"),
-                            Code = "R4001",
-                            CreationDate = new DateTime(2026, 3, 1, 22, 2, 42, 586, DateTimeKind.Local).AddTicks(5130),
-                            Description = "Proventos de investimentos",
-                            Name = "Proventos de investimentos"
-                        },
-                        new
-                        {
-                            Id = new Guid("e5110ae7-3280-4d31-b528-261d963aee25"),
-                            CategoryId = new Guid("effe2b1f-b5fc-4ce3-8306-084e7759d20c"),
-                            Code = "R4002",
-                            CreationDate = new DateTime(2026, 3, 1, 22, 2, 42, 586, DateTimeKind.Local).AddTicks(5139),
-                            Description = "Transferência entre contas",
-                            Name = "Transferência entre contas"
-                        },
-                        new
-                        {
-                            Id = new Guid("f9be2968-b99c-4962-8521-39a3daef380e"),
-                            CategoryId = new Guid("0e3d619d-9e30-4de1-a43a-82aca124e259"),
-                            Code = "A1001",
-                            CreationDate = new DateTime(2026, 3, 1, 22, 2, 42, 586, DateTimeKind.Local).AddTicks(5150),
-                            Description = "Compra em supermercado",
-                            Name = "Compra em supermercado"
-                        },
-                        new
-                        {
-                            Id = new Guid("e5673067-7281-4858-987b-64121feae47c"),
-                            CategoryId = new Guid("0e3d619d-9e30-4de1-a43a-82aca124e259"),
-                            Code = "A1002",
-                            CreationDate = new DateTime(2026, 3, 1, 22, 2, 42, 586, DateTimeKind.Local).AddTicks(5159),
-                            Description = "Feira: frutas e verduras",
-                            Name = "Feira: frutas e verduras"
-                        },
-                        new
-                        {
-                            Id = new Guid("7d6ab60c-fa60-4482-8b2d-2bba4aa7cb54"),
-                            CategoryId = new Guid("0e3d619d-9e30-4de1-a43a-82aca124e259"),
-                            Code = "A1003",
-                            CreationDate = new DateTime(2026, 3, 1, 22, 2, 42, 586, DateTimeKind.Local).AddTicks(5168),
-                            Description = "Padaria",
-                            Name = "Padaria"
-                        });
+                    b.ToTable("PurchaseInInstallments");
                 });
 
             modelBuilder.Entity("FinancasPessoais.Infra.Data.Identity.ApplicationUser", b =>
@@ -673,13 +544,23 @@ namespace FinancasPessoais.Infra.Data.Migrations
 
             modelBuilder.Entity("FinancasPessoais.Domain.Entities.AccountPayable", b =>
                 {
-                    b.HasOne("FinancasPessoais.Domain.Entities.Subcategory", "Subcategory")
-                        .WithMany("AccountsPayable")
-                        .HasForeignKey("SubcategoryId")
+                    b.HasOne("FinancasPessoais.Domain.Entities.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Subcategory");
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("FinancasPessoais.Domain.Entities.Category", b =>
+                {
+                    b.HasOne("FinancasPessoais.Domain.Entities.Category", "ParentCategory")
+                        .WithMany()
+                        .HasForeignKey("ParentCategoryId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("ParentCategory");
                 });
 
             modelBuilder.Entity("FinancasPessoais.Domain.Entities.FinancialRelease", b =>
@@ -687,6 +568,12 @@ namespace FinancasPessoais.Infra.Data.Migrations
                     b.HasOne("FinancasPessoais.Domain.Entities.Account", "Account")
                         .WithMany("FinancialReleases")
                         .HasForeignKey("AccountId");
+
+                    b.HasOne("FinancasPessoais.Domain.Entities.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("FinancasPessoais.Domain.Entities.CreditCard", "CreditCard")
                         .WithMany("FinancialReleases")
@@ -696,12 +583,6 @@ namespace FinancasPessoais.Infra.Data.Migrations
                         .WithMany("FinancialReleases")
                         .HasForeignKey("PurchaseInInstallmentsId");
 
-                    b.HasOne("FinancasPessoais.Domain.Entities.Subcategory", "Subcategory")
-                        .WithMany("FinancialReleases")
-                        .HasForeignKey("SubcategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("FinancasPessoais.Infra.Data.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -710,41 +591,30 @@ namespace FinancasPessoais.Infra.Data.Migrations
 
                     b.Navigation("Account");
 
+                    b.Navigation("Category");
+
                     b.Navigation("CreditCard");
 
                     b.Navigation("PurchaseInInstallments");
-
-                    b.Navigation("Subcategory");
                 });
 
             modelBuilder.Entity("FinancasPessoais.Domain.Entities.PurchaseInInstallments", b =>
                 {
+                    b.HasOne("FinancasPessoais.Domain.Entities.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("FinancasPessoais.Domain.Entities.CreditCard", "CreditCard")
                         .WithMany("PurchaseInInstallments")
                         .HasForeignKey("CreditCardId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("FinancasPessoais.Domain.Entities.Subcategory", "Subcategory")
-                        .WithMany("PurchaseInInstallments")
-                        .HasForeignKey("SubcategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Category");
 
                     b.Navigation("CreditCard");
-
-                    b.Navigation("Subcategory");
-                });
-
-            modelBuilder.Entity("FinancasPessoais.Domain.Entities.Subcategory", b =>
-                {
-                    b.HasOne("FinancasPessoais.Domain.Entities.Category", "Category")
-                        .WithMany("Subcategories")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -803,11 +673,6 @@ namespace FinancasPessoais.Infra.Data.Migrations
                     b.Navigation("FinancialReleases");
                 });
 
-            modelBuilder.Entity("FinancasPessoais.Domain.Entities.Category", b =>
-                {
-                    b.Navigation("Subcategories");
-                });
-
             modelBuilder.Entity("FinancasPessoais.Domain.Entities.CreditCard", b =>
                 {
                     b.Navigation("FinancialReleases");
@@ -818,15 +683,6 @@ namespace FinancasPessoais.Infra.Data.Migrations
             modelBuilder.Entity("FinancasPessoais.Domain.Entities.PurchaseInInstallments", b =>
                 {
                     b.Navigation("FinancialReleases");
-                });
-
-            modelBuilder.Entity("FinancasPessoais.Domain.Entities.Subcategory", b =>
-                {
-                    b.Navigation("AccountsPayable");
-
-                    b.Navigation("FinancialReleases");
-
-                    b.Navigation("PurchaseInInstallments");
                 });
 #pragma warning restore 612, 618
         }

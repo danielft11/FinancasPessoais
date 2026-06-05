@@ -19,7 +19,7 @@ namespace FinancasPessoais.Infra.Data.EntitiesConfiguration
             builder
                .Property(p => p.Code)
                .IsRequired()
-               .HasMaxLength(2);
+               .HasMaxLength(10);
 
             builder
                 .Property(p => p.Name)

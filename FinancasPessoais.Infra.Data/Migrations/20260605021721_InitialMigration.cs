@@ -72,11 +72,18 @@ namespace FinancasPessoais.Infra.Data.Migrations
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
                     Type = table.Column<int>(type: "int", maxLength: 7, nullable: false),
+                    ParentCategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Categories_Categories_ParentCategoryId",
+                        column: x => x.ParentCategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -203,35 +210,13 @@ namespace FinancasPessoais.Infra.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Subcategories",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
-                    Code = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: false),
-                    CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Subcategories", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Subcategories_Categories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AccountsPayable",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DueDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Value = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
-                    SubcategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     BarCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ScheduleDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -243,9 +228,9 @@ namespace FinancasPessoais.Infra.Data.Migrations
                 {
                     table.PrimaryKey("PK_AccountsPayable", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AccountsPayable_Subcategories_SubcategoryId",
-                        column: x => x.SubcategoryId,
-                        principalTable: "Subcategories",
+                        name: "FK_AccountsPayable_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -260,7 +245,7 @@ namespace FinancasPessoais.Infra.Data.Migrations
                     PurchaseValue = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
                     NumberOfInstallments = table.Column<int>(type: "int", nullable: false),
                     ClosingDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    SubcategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreditCardId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -268,15 +253,15 @@ namespace FinancasPessoais.Infra.Data.Migrations
                 {
                     table.PrimaryKey("PK_PurchaseInInstallments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PurchaseInInstallments_CreditCards_CreditCardId",
-                        column: x => x.CreditCardId,
-                        principalTable: "CreditCards",
+                        name: "FK_PurchaseInInstallments_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PurchaseInInstallments_Subcategories_SubcategoryId",
-                        column: x => x.SubcategoryId,
-                        principalTable: "Subcategories",
+                        name: "FK_PurchaseInInstallments_CreditCards_CreditCardId",
+                        column: x => x.CreditCardId,
+                        principalTable: "CreditCards",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -291,7 +276,7 @@ namespace FinancasPessoais.Infra.Data.Migrations
                     PaymentDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Value = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
-                    SubcategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     AccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreditCardId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     PurchaseInInstallmentsId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
@@ -314,6 +299,12 @@ namespace FinancasPessoais.Infra.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
+                        name: "FK_FinancialReleases_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_FinancialReleases_CreditCards_CreditCardId",
                         column: x => x.CreditCardId,
                         principalTable: "CreditCards",
@@ -325,12 +316,6 @@ namespace FinancasPessoais.Infra.Data.Migrations
                         principalTable: "PurchaseInInstallments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_FinancialReleases_Subcategories_SubcategoryId",
-                        column: x => x.SubcategoryId,
-                        principalTable: "Subcategories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -338,49 +323,31 @@ namespace FinancasPessoais.Infra.Data.Migrations
                 columns: new[] { "Id", "AccountNumber", "BankBranch", "CreationDate", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("5a7dd7d1-0fc2-4606-8ed2-5a32311e321e"), "278499", "5611", new DateTime(2026, 3, 1, 22, 2, 42, 577, DateTimeKind.Local).AddTicks(4342), "Itaú" },
-                    { new Guid("a9d03220-ddea-45a0-bf2b-be3075b3c7c0"), "000007181", "0081", new DateTime(2026, 3, 1, 22, 2, 42, 579, DateTimeKind.Local).AddTicks(9950), "Caixa" }
+                    { new Guid("5a7dd7d1-0fc2-4606-8ed2-5a32311e321e"), "278499", "5611", new DateTime(2026, 6, 4, 23, 17, 20, 704, DateTimeKind.Local).AddTicks(5044), "Itaú" },
+                    { new Guid("a9d03220-ddea-45a0-bf2b-be3075b3c7c0"), "000007181", "0081", new DateTime(2026, 6, 4, 23, 17, 20, 706, DateTimeKind.Local).AddTicks(1812), "Caixa" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Categories",
-                columns: new[] { "Id", "Code", "CreationDate", "Description", "Name", "Type" },
+                columns: new[] { "Id", "Code", "CreationDate", "Description", "Name", "ParentCategoryId", "Type" },
                 values: new object[,]
                 {
-                    { new Guid("1e1430da-a3a8-4c0a-a9d6-bc7057ec52f7"), "R1", new DateTime(2026, 3, 1, 22, 2, 42, 582, DateTimeKind.Local).AddTicks(3320), "Salário", "Salário", 0 },
-                    { new Guid("a6611ff8-9866-486d-a13c-3b816e3a5d19"), "R2", new DateTime(2026, 3, 1, 22, 2, 42, 582, DateTimeKind.Local).AddTicks(7706), "Serviços", "Serviços", 0 },
-                    { new Guid("af5c3c93-9724-49ed-97cb-e8a385eedaae"), "R3", new DateTime(2026, 3, 1, 22, 2, 42, 582, DateTimeKind.Local).AddTicks(7735), "Empréstimo - Recebimento", "Empréstimo - Recebimento", 0 },
-                    { new Guid("effe2b1f-b5fc-4ce3-8306-084e7759d20c"), "R4", new DateTime(2026, 3, 1, 22, 2, 42, 582, DateTimeKind.Local).AddTicks(7744), "Outras Receitas", "Outras Receitas", 0 },
-                    { new Guid("0e3d619d-9e30-4de1-a43a-82aca124e259"), "A1", new DateTime(2026, 3, 1, 22, 2, 42, 582, DateTimeKind.Local).AddTicks(7752), "Alimentação", "Alimentação", 1 }
+                    { new Guid("0e3d619d-9e30-4de1-a43a-82aca124e259"), "A1", new DateTime(2026, 6, 4, 23, 17, 20, 709, DateTimeKind.Local).AddTicks(1192), "Alimentação", "Alimentação", null, 1 },
+                    { new Guid("1e1430da-a3a8-4c0a-a9d6-bc7057ec52f7"), "R1", new DateTime(2026, 6, 4, 23, 17, 20, 709, DateTimeKind.Local).AddTicks(3878), "Salário", "Salário", null, 0 },
+                    { new Guid("a6611ff8-9866-486d-a13c-3b816e3a5d19"), "R2", new DateTime(2026, 6, 4, 23, 17, 20, 709, DateTimeKind.Local).AddTicks(3905), "Serviços", "Serviços", null, 0 },
+                    { new Guid("af5c3c93-9724-49ed-97cb-e8a385eedaae"), "R3", new DateTime(2026, 6, 4, 23, 17, 20, 709, DateTimeKind.Local).AddTicks(3916), "Empréstimo - Recebimento", "Empréstimo - Recebimento", null, 0 },
+                    { new Guid("effe2b1f-b5fc-4ce3-8306-084e7759d20c"), "R4", new DateTime(2026, 6, 4, 23, 17, 20, 709, DateTimeKind.Local).AddTicks(3932), "Outras Receitas", "Outras Receitas", null, 0 }
                 });
 
             migrationBuilder.InsertData(
                 table: "CreditCards",
                 columns: new[] { "Id", "CardLimit", "CardName", "CardNumber", "CreationDate", "InvoiceClosingDate", "InvoiceDueDate" },
-                values: new object[] { new Guid("cbaba53b-a642-4904-ad7e-542ef52c2ec0"), 15000m, "Itaucard Click Final 9289", "5316805324229289", new DateTime(2026, 3, 1, 22, 2, 42, 592, DateTimeKind.Local).AddTicks(8404), 2, 9 });
-
-            migrationBuilder.InsertData(
-                table: "Subcategories",
-                columns: new[] { "Id", "CategoryId", "Code", "CreationDate", "Description", "Name" },
-                values: new object[,]
-                {
-                    { new Guid("2b89b6ef-8751-4b37-8610-ca2f05354199"), new Guid("1e1430da-a3a8-4c0a-a9d6-bc7057ec52f7"), "R1001", new DateTime(2026, 3, 1, 22, 2, 42, 586, DateTimeKind.Local).AddTicks(1782), "Salário", "Salário" },
-                    { new Guid("ad4a83ea-5f19-4b99-a51e-87e3e4d57531"), new Guid("1e1430da-a3a8-4c0a-a9d6-bc7057ec52f7"), "R1002", new DateTime(2026, 3, 1, 22, 2, 42, 586, DateTimeKind.Local).AddTicks(4998), "13º salário", "13º salário" },
-                    { new Guid("28419dcf-3fb8-446c-83f3-04333185f3e5"), new Guid("a6611ff8-9866-486d-a13c-3b816e3a5d19"), "R2001", new DateTime(2026, 3, 1, 22, 2, 42, 586, DateTimeKind.Local).AddTicks(5024), "Mão-de-obra", "Mão-de-obra" },
-                    { new Guid("075a3fbd-199e-4753-8866-0909cc033e46"), new Guid("a6611ff8-9866-486d-a13c-3b816e3a5d19"), "R2002", new DateTime(2026, 3, 1, 22, 2, 42, 586, DateTimeKind.Local).AddTicks(5034), "Venda de peças", "Venda de peças" },
-                    { new Guid("4c6f2c59-e03b-4ed3-8bea-96a7b9067cb6"), new Guid("a6611ff8-9866-486d-a13c-3b816e3a5d19"), "R2003", new DateTime(2026, 3, 1, 22, 2, 42, 586, DateTimeKind.Local).AddTicks(5108), "Revenda de peças", "Revenda de peças" },
-                    { new Guid("44a8faf1-d11e-45be-89a7-755e1adcbb39"), new Guid("af5c3c93-9724-49ed-97cb-e8a385eedaae"), "R3001", new DateTime(2026, 3, 1, 22, 2, 42, 586, DateTimeKind.Local).AddTicks(5121), "Empréstimo - Recebimento", "Empréstimo - Recebimento" },
-                    { new Guid("fbacb127-fb7e-4a58-997a-2aa5d2c689e1"), new Guid("effe2b1f-b5fc-4ce3-8306-084e7759d20c"), "R4001", new DateTime(2026, 3, 1, 22, 2, 42, 586, DateTimeKind.Local).AddTicks(5130), "Proventos de investimentos", "Proventos de investimentos" },
-                    { new Guid("e5110ae7-3280-4d31-b528-261d963aee25"), new Guid("effe2b1f-b5fc-4ce3-8306-084e7759d20c"), "R4002", new DateTime(2026, 3, 1, 22, 2, 42, 586, DateTimeKind.Local).AddTicks(5139), "Transferência entre contas", "Transferência entre contas" },
-                    { new Guid("f9be2968-b99c-4962-8521-39a3daef380e"), new Guid("0e3d619d-9e30-4de1-a43a-82aca124e259"), "A1001", new DateTime(2026, 3, 1, 22, 2, 42, 586, DateTimeKind.Local).AddTicks(5150), "Compra em supermercado", "Compra em supermercado" },
-                    { new Guid("e5673067-7281-4858-987b-64121feae47c"), new Guid("0e3d619d-9e30-4de1-a43a-82aca124e259"), "A1002", new DateTime(2026, 3, 1, 22, 2, 42, 586, DateTimeKind.Local).AddTicks(5159), "Feira: frutas e verduras", "Feira: frutas e verduras" },
-                    { new Guid("7d6ab60c-fa60-4482-8b2d-2bba4aa7cb54"), new Guid("0e3d619d-9e30-4de1-a43a-82aca124e259"), "A1003", new DateTime(2026, 3, 1, 22, 2, 42, 586, DateTimeKind.Local).AddTicks(5168), "Padaria", "Padaria" }
-                });
+                values: new object[] { new Guid("cbaba53b-a642-4904-ad7e-542ef52c2ec0"), 15000m, "Itaucard Click Final 9289", "5316805324229289", new DateTime(2026, 6, 4, 23, 17, 20, 713, DateTimeKind.Local).AddTicks(2303), 2, 9 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AccountsPayable_SubcategoryId",
+                name: "IX_AccountsPayable_CategoryId",
                 table: "AccountsPayable",
-                column: "SubcategoryId");
+                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -422,9 +389,19 @@ namespace FinancasPessoais.Infra.Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Categories_ParentCategoryId",
+                table: "Categories",
+                column: "ParentCategoryId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_FinancialReleases_AccountId",
                 table: "FinancialReleases",
                 column: "AccountId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FinancialReleases_CategoryId",
+                table: "FinancialReleases",
+                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FinancialReleases_CreditCardId",
@@ -437,29 +414,19 @@ namespace FinancasPessoais.Infra.Data.Migrations
                 column: "PurchaseInInstallmentsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FinancialReleases_SubcategoryId",
-                table: "FinancialReleases",
-                column: "SubcategoryId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_FinancialReleases_UserId",
                 table: "FinancialReleases",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PurchaseInInstallments_CategoryId",
+                table: "PurchaseInInstallments",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PurchaseInInstallments_CreditCardId",
                 table: "PurchaseInInstallments",
                 column: "CreditCardId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PurchaseInInstallments_SubcategoryId",
-                table: "PurchaseInInstallments",
-                column: "SubcategoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Subcategories_CategoryId",
-                table: "Subcategories",
-                column: "CategoryId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -498,13 +465,10 @@ namespace FinancasPessoais.Infra.Data.Migrations
                 name: "PurchaseInInstallments");
 
             migrationBuilder.DropTable(
-                name: "CreditCards");
-
-            migrationBuilder.DropTable(
-                name: "Subcategories");
-
-            migrationBuilder.DropTable(
                 name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "CreditCards");
         }
     }
 }
