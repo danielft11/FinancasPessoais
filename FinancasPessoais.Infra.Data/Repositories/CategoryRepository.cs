@@ -24,7 +24,7 @@ namespace FinancasPessoais.Infra.Data.Repositories
                     categories.Where(c => c.Type == ReleaseTypes.Expense);
             
             return await categories
-                .OrderBy(c => c.Name)
+                .OrderBy(c => c.Code)
                 .ToListAsync();
         }
 
