@@ -41,7 +41,7 @@ namespace FinancasPessoais.Infra.Data.EntitiesConfiguration
                 .HasForeignKey(p => p.ParentCategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            SeedCategory(builder);
+            //SeedCategory(builder);
         }
 
         private static void SeedCategory(EntityTypeBuilder builder)
