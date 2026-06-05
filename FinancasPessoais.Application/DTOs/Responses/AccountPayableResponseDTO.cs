@@ -19,11 +19,11 @@ namespace FinancasPessoais.Application.DTOs.Responses
         [JsonPropertyName("valor")]
         public decimal Value { get; private set; }
 
-        [JsonPropertyName("subcategoryId")]
-        public Guid SubcategoryId { get; set; }
+        [JsonPropertyName("categoryId")]
+        public Guid CategoryId { get; set; }
 
-        [JsonPropertyName("subcategoria")]
-        public string Subcategory { get; set; }
+        [JsonPropertyName("categoria")]
+        public string Category { get; set; }
 
         [JsonPropertyName("descricao")]
         public string Description { get; private set; }

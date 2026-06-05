@@ -27,11 +27,11 @@ namespace FinancasPessoais.Application.Services
         #endregion
 
         #region Public Methods
-        public async Task<IEnumerable<CategoryResponseDTO>> GetAsync(int? releaseType, bool withSubcategories = false)
+        public async Task<IEnumerable<CategoryResponseDTO>> GetAsync(int? releaseType)
         {
             try
             {
-                var categories = await _categoryRepository.GetAsync(releaseType, withSubcategories);
+                var categories = await _categoryRepository.GetAsync(releaseType);
                 return _mapper.Map<List<CategoryResponseDTO>>(categories);
             }
             catch (Exception ex)
@@ -76,7 +76,7 @@ namespace FinancasPessoais.Application.Services
             if (await GetCategoryByCodeAsync(categoryDTO.Code) != null)
                 throw new Exception(Constants.EntityAlreadyExist("category", Operations.Insert));
 
-            var categoryCreated = await _categoryRepository.CreateAsync(new Category(Guid.NewGuid(), categoryDTO.Code, categoryDTO.Name, categoryDTO.Type, categoryDTO.Description));
+            var categoryCreated = await _categoryRepository.CreateAsync(new Category(Guid.NewGuid(), categoryDTO.Code, categoryDTO.Name, categoryDTO.Type, categoryDTO.ParentCategoryId, categoryDTO.Description));
 
             return _mapper.Map<CategoryResponseDTO>(categoryCreated);
         }
@@ -96,9 +96,6 @@ namespace FinancasPessoais.Application.Services
             var category = await GetCategoryByCodeWitchSubcategoriesAsync(code) ?? 
                 throw new Exception(Constants.EntityNotExistError(Operations.Remove, "category", "category"));
             
-            if (category.HasSubcategories())
-                throw new Exception(Constants.CATEGORY_WITH_SUBCATEGORIES);
-
             await _categoryRepository.RemoveAsync(category);
         }
 

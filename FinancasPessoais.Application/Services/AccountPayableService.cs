@@ -44,7 +44,7 @@ namespace FinancasPessoais.Application.Services
             var accountPayable = new AccountPayable(
                     request.DueDate,
                     request.Value,
-                    request.SubcategoryId,
+                    request.CategoryId,
                     request.Description,
                     request.BarCode,
                     request.ScheduleDate,

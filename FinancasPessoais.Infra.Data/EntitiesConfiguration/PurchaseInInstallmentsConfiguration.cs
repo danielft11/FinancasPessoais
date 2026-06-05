@@ -33,9 +33,9 @@ namespace FinancasPessoais.Infra.Data.EntitiesConfiguration
             .Property(p => p.ClosingDate);
 
             builder
-              .HasOne(s => s.Subcategory)
-              .WithMany(p => p.PurchaseInInstallments)
-              .HasForeignKey(s => s.SubcategoryId);
+              .HasOne(s => s.Category)
+              .WithMany()
+              .HasForeignKey(s => s.CategoryId);
 
             builder
               .HasOne(s => s.CreditCard)

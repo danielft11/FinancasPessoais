@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace FinancasPessoais.Application.DTOs.Responses
@@ -20,8 +19,5 @@ namespace FinancasPessoais.Application.DTOs.Responses
 
         [JsonPropertyName("descricao")]
         public string Description { get; set; }
-
-        [JsonPropertyName("subcategorias")]
-        public List<SubcategoryResponseDTO> Subcategories { get; set; }
     }
 }

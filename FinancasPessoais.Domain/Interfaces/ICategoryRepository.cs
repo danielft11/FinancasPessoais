@@ -9,6 +9,6 @@ namespace FinancasPessoais.Domain.Interfaces
         Task<IEnumerable<Category>> GetCategoryByNameAsync(string name);
         Task<Category> GetCategoryByCodeAsync(string code);
         Task<Category> GetCategoryByCodeWitchSubcategoriesAsync(string code);
-        Task<IEnumerable<Category>> GetAsync(int? releaseType, bool withSubcategories = false);
+        Task<IEnumerable<Category>> GetAsync(int? releaseType);
     }
 }

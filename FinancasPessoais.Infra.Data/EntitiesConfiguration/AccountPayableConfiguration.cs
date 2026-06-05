@@ -1,11 +1,6 @@
 ﻿using FinancasPessoais.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FinancasPessoais.Infra.Data.EntitiesConfiguration
 {
@@ -26,9 +21,9 @@ namespace FinancasPessoais.Infra.Data.EntitiesConfiguration
               .HasPrecision(10, 2);
 
             builder
-               .HasOne(s => s.Subcategory)
-               .WithMany(f => f.AccountsPayable)
-               .HasForeignKey(s => s.SubcategoryId);
+               .HasOne(s => s.Category)
+               .WithMany()
+               .HasForeignKey(s => s.CategoryId);
 
             builder
                .Property(p => p.Description)

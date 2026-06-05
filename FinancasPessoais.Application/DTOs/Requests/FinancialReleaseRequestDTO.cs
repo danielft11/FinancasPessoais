@@ -25,9 +25,9 @@ namespace FinancasPessoais.Application.DTOs.Requests
         [JsonPropertyName("descricao")]
         public string Description { get; set; }
 
-        [Required(ErrorMessage = "The field subcategoria is required")]
-        [JsonPropertyName("subcategoria")]
-        public Guid SubcategoryId { get; set; }
+        [Required(ErrorMessage = "The field categoria is required")]
+        [JsonPropertyName("categoria")]
+        public Guid CategoryId { get; set; }
 
         [JsonPropertyName("conta")]
         public Guid? AccountId { get; set; }

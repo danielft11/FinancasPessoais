@@ -76,6 +76,6 @@ namespace FinancasPessoais.Application.Factories
             return request.Type == ReleaseTypes.Expense && request.Value > balance;
         }
 
-      
     }
+
 }

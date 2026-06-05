@@ -24,11 +24,11 @@ namespace FinancasPessoais.Api.Controllers
         [ProducesResponseType(typeof(IActionResult), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(IActionResult), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(IActionResult), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetCategories([FromQuery] int? releaseType = null, bool withSubcategories = false)
+        public async Task<IActionResult> GetCategories([FromQuery] int? releaseType = null)
         {
             try
             {
-                return Ok(await _categoryService.GetAsync(releaseType, withSubcategories));
+                return Ok(await _categoryService.GetAsync(releaseType));
             }
             catch (Exception ex)
             {

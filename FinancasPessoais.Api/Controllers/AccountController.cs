@@ -1,12 +1,10 @@
 ﻿using FinancasPessoais.Application.DTOs.Requests;
 using FinancasPessoais.Application.Interfaces;
 using FinancasPessoais.Domain.Utils;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace FinancasPessoais.Api.Controllers
@@ -17,14 +15,12 @@ namespace FinancasPessoais.Api.Controllers
     {
         #region Injected Services
         private readonly IAccountService _accountService;
-        private readonly ISubcategoryService _subcategoryService;
         #endregion
 
         #region Constructor
-        public AccountController(IAccountService accountService, ISubcategoryService subcategoryService)
+        public AccountController(IAccountService accountService)
         {
             _accountService = accountService;
-            _subcategoryService = subcategoryService;
         }
         #endregion
 

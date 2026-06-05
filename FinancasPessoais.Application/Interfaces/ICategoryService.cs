@@ -9,7 +9,7 @@ namespace FinancasPessoais.Application.Interfaces
 {
     public interface ICategoryService
     {
-        Task<IEnumerable<CategoryResponseDTO>> GetAsync(int? releaseType, bool withSubcategories = false);
+        Task<IEnumerable<CategoryResponseDTO>> GetAsync(int? releaseType);
         Task<CategoryResponseDTO> GetByIdAsync(Guid id);
         Task<Category> GetCategoryByCodeAsync(string code);
         Task<Category> GetCategoryByCodeWitchSubcategoriesAsync(string code);

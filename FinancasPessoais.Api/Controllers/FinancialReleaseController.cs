@@ -22,7 +22,7 @@ namespace FinancasPessoais.Api.Controllers
         private readonly IAccountService _accountService;
         private readonly ICreditCardService _creditCardService;
         private readonly IFinancialReleaseFactory _financialReleaseFactory;
-        private readonly ISubcategoryService _subCategoryService;
+        private readonly ICategoryService _categoryService;
 
         #endregion
 
@@ -31,12 +31,12 @@ namespace FinancasPessoais.Api.Controllers
         public FinancialReleaseController(IAccountService accountService,
             ICreditCardService creditCardService,
             IFinancialReleaseFactory financialReleaseFactory, 
-            ISubcategoryService subCategoryService)
+            ICategoryService categoryService)
         {
             _accountService = accountService;
             _creditCardService = creditCardService;
             _financialReleaseFactory = financialReleaseFactory;
-            _subCategoryService = subCategoryService;
+            _categoryService = categoryService;
         }
 
         #endregion
@@ -95,9 +95,9 @@ namespace FinancasPessoais.Api.Controllers
         {
             try
             {
-                var subcategory = await _subCategoryService.GetByIdAsync(request.SubcategoryId);
-                if (subcategory == null)
-                    return BadRequest(Constants.EntityNotExistError(Operations.Insert, "purcharse in installments", "subcategory"));
+                var category = await _categoryService.GetByIdAsync(request.CategoryId);
+                if (category == null)
+                    return BadRequest(Constants.EntityNotExistError(Operations.Insert, "purcharse in installments", "category"));
 
                 var purchase = await _financialReleaseFactory.CreateInstallmentPurchaseOnCreditCard(request);
 
@@ -241,8 +241,8 @@ namespace FinancasPessoais.Api.Controllers
             if (ReleaseDateIsGreatherThanCurrentDate(request.ReleaseDate))
                 throw new Exception(Constants.FAILED_INCLUDE_FINANCIALRELEASE_DATE_GREATER_THAN_CURRENT_DATE);
             
-            if (await SubcategoryDoesNotExist(request))
-                throw new Exception(Constants.EntityNotExistError(Operations.Insert, "financial release", "subcategory"));
+            if (await CategoryDoesNotExist(request))
+                throw new Exception(Constants.EntityNotExistError(Operations.Insert, "financial release", "category"));
 
             if (request.Type == ReleaseTypes.Income && request.CreditCardId != null)
                 throw new Exception("Não é possível incluir lançamento do tipo Receita em Cartão de Crédito.");
@@ -253,9 +253,9 @@ namespace FinancasPessoais.Api.Controllers
             return releaseDate.Date > DateTime.Today;
         }
 
-        private async Task<bool> SubcategoryDoesNotExist(FinancialReleaseRequestDTO request)
+        private async Task<bool> CategoryDoesNotExist(FinancialReleaseRequestDTO request)
         {
-            return await _subCategoryService.GetByIdAsync(request.SubcategoryId) == null;
+            return await _categoryService.GetByIdAsync(request.CategoryId) == null;
         }
 
         private string LoggedUserId() 

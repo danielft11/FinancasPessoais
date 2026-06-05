@@ -1,4 +1,5 @@
 ﻿using FinancasPessoais.Domain.Utils;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
@@ -21,6 +22,9 @@ namespace FinancasPessoais.Application.DTOs.Requests
         [Required(ErrorMessage = "The field tipo is required")]
         [JsonPropertyName("tipo")]
         public ReleaseTypes Type { get; set; }
+
+        [JsonPropertyName("idCategoriaPai")]
+        public  Guid? ParentCategoryId { get; set; }
 
         [MinLength(2, ErrorMessage = "The descricao must be 2 characters long.")]
         [MaxLength(250, ErrorMessage = "The descricao allows a maximum of 250 characters.")]

@@ -3,7 +3,6 @@ using FinancasPessoais.Domain.Interfaces;
 using FinancasPessoais.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,7 +16,7 @@ namespace FinancasPessoais.Infra.Data.Repositories
         public async override Task<IEnumerable<AccountPayable>> GetAsync()
         {
             return await _context.AccountsPayable
-                .Include(c => c.Subcategory)
+                .Include(c => c.Category)
                 .ToListAsync();
         }
 

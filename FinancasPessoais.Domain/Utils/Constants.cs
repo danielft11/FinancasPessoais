@@ -3,13 +3,11 @@
     public static class Constants
     {
         public const string INVALID_ID = "ID cannot be null.";
-        public const string INVALID_SUBCATEGORY_ID = "Invalid subcategoryId, financial release cannot be created without a subcategory.";
+        public const string INVALID_CATEGORY_ID = "Invalid categoryId, financial release cannot be created without a category.";
         public const string INVALID_CREDIT_CARD_ID = "Invalid creditCardId, credit card release cannot be created without a creditCard.";
         public const string INVALID_VALUE = "Invalid value, release value cannot be greater than the account balance.";
-        public const string SUBCATEGORY_WITHOUT_CATEGORY = "Subcategory cannot be created without a category.";
         public const string ACCOUNT_ALREADY_EXISTS = "Falha ao inserir a conta bancária: já existe uma conta bancária cadastrada com o mesmo nome e número informados.";
         public const string ACCOUNT_WITH_FINANCIAL_RELEASES = "Não foi possível remover a conta pois existem lançamentos financeiros que estão utilizando a mesma.";
-        public const string CATEGORY_WITH_SUBCATEGORIES = "Failed to remove category. The category is being used by some subcategory(ies).";
         public const string AMOUNT_GREATHER_THAN_ACCOUNT_BALANCE = "Impossível incluir o lançamento financeiro: o valor informado é maior que o saldo da conta.";
         public const string FAILED_INCLUDE_FINANCIALRELEASE_WITHOUT_ACCOUNT = "Falha ao incluir lançamento: o lançamento deve pertencer a uma conta ou cartão de crédito.";
         public const string FAILED_INCLUDE_FINANCIALRELEASE_DATE_GREATER_THAN_CURRENT_DATE = "Falha ao incluir o lançamento financeiro. A data do lançamento não pode ser maior que a data atual.";

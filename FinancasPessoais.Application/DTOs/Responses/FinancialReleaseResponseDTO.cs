@@ -18,7 +18,7 @@ namespace FinancasPessoais.Application.DTOs.Responses
         public string Description { get; set; }
 
         [JsonPropertyName("subcategoria")]
-        public string SubcategoryName { get; set; }
+        public string CategoryName { get; set; }
 
         [JsonPropertyName("conta")]
         public string AccountName { get; set; }

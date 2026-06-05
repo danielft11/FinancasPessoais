@@ -96,7 +96,6 @@ namespace FinancasPessoais.Infra.IoC
         {
             _services.AddScoped<IAccountRepository, AccountRepository>();
             _services.AddScoped<ICategoryRepository, CategoryRepository>();
-            _services.AddScoped<ISubcategoryRepository, SubcategoryRepository>();
             _services.AddScoped<ICreditCardRepository, CreditCardRepository>();
             _services.AddScoped<ICreditCardReleaseRepository, CreditCardReleaseRepository>();
             _services.AddScoped<IFinancialReleaseRepository, FinancialReleaseRepository>();
@@ -109,7 +108,6 @@ namespace FinancasPessoais.Infra.IoC
             _services.AddScoped<IAccountService, AccountService>();
             _services.AddScoped<ICategoryService, CategoryService>();
             _services.AddScoped<ICreditCardService, CreditCardService>();
-            _services.AddScoped<ISubcategoryService, SubcategoryService>();
             _services.AddScoped<IFinancialReleaseService, FinancialReleaseService>();
             _services.AddScoped<IFinancialReleaseFactory, FinancialReleaseFactory>();
             _services.AddScoped<IAccountPayableService, AccountPayableService>();

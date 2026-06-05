@@ -1,5 +1,4 @@
-﻿using FinancasPessoais.Domain.Utils;
-using System;
+﻿using System;
 using System.Text.Json.Serialization;
 
 namespace FinancasPessoais.Application.DTOs.Responses
@@ -21,9 +20,6 @@ namespace FinancasPessoais.Application.DTOs.Responses
         [JsonPropertyName("categoria")]
         public string Category { get; set; }
         
-        [JsonPropertyName("subcategoria")]
-        public string Subcategory { get; set; }
-
         [JsonPropertyName("conta")]
         public string Account { get; set; }
 

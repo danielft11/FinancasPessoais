@@ -14,12 +14,9 @@ namespace FinancasPessoais.Infra.Data.Repositories
     {
         public CategoryRepository(ApplicationDbContext context) : base(context) { }
 
-        public async Task<IEnumerable<Category>> GetAsync(int? releaseType, bool withSubcategories = false) 
+        public async Task<IEnumerable<Category>> GetAsync(int? releaseType) 
         {
             IQueryable<Category> categories = _context.Categories;
-
-            if (withSubcategories)
-                categories = categories.Include(s => s.Subcategories);
 
             if (releaseType != null)
                 categories = releaseType == 0 ? 
@@ -40,7 +37,6 @@ namespace FinancasPessoais.Infra.Data.Repositories
         public async Task<Category> GetCategoryByCodeWitchSubcategoriesAsync(string code)
         {
             return await _context.Categories
-                .Include(s => s.Subcategories)
                 .FirstOrDefaultAsync(c => c.Code == code);
         }
 

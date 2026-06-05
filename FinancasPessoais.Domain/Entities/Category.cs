@@ -1,8 +1,6 @@
 ﻿using FinancasPessoais.Domain.Exceptions;
 using FinancasPessoais.Domain.Utils;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace FinancasPessoais.Domain.Entities
 {
@@ -13,18 +11,23 @@ namespace FinancasPessoais.Domain.Entities
         public string Name { get; private set; }
         public string Description { get; private set; }
         public ReleaseTypes Type { get; set; }
-        #endregion
 
         #region Navigation Properties
-        public IEnumerable<Subcategory> Subcategories { get; private set; }
+
+        public Guid? ParentCategoryId { get; set; }
+        public Category ParentCategory { get; set; }
+
+        #endregion
+
         #endregion
 
         #region Construtor
 
-        public Category(Guid id, string code, string name, ReleaseTypes type, string description = "")
+        public Category(Guid id, string code, string name, ReleaseTypes type, Guid? parentCategoryId, string description = "")
         {
             ValidateDomain(code, name, type, description);
             Id = id;
+            ParentCategoryId = parentCategoryId;
         }
 
         #endregion
@@ -35,8 +38,6 @@ namespace FinancasPessoais.Domain.Entities
         {
             ValidateDomain(code, name, type, description);
         }
-
-        public bool HasSubcategories() => Subcategories.Any();
 
         #endregion
 

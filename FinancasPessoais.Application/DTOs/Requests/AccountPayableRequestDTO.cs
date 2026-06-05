@@ -12,8 +12,8 @@ namespace FinancasPessoais.Application.DTOs.Requests
         [Required(ErrorMessage = "The field Value is required")]
         public decimal Value { get; set; }
 
-        [Required(ErrorMessage = "The field SubcategoryId is required")]
-        public Guid SubcategoryId { get; set; }
+        [Required(ErrorMessage = "The field categoryId is required")]
+        public Guid CategoryId { get; set; }
 
         [Required(ErrorMessage = "The field Description is required")]
         public string Description { get; set; }

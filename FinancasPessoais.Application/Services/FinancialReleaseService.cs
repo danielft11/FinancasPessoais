@@ -40,8 +40,7 @@ namespace FinancasPessoais.Application.Services
                 PaymentDate = financialRelease.PaymentDate,
                 Value = financialRelease.Value.ToString(),
                 Description = financialRelease.Description,
-                CategoryName = financialRelease.Subcategory.Category.Name,
-                SubcategoryName = financialRelease.Subcategory.Name
+                CategoryName = financialRelease.Category.Name
             });
         }
 

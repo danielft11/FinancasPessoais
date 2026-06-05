@@ -1,5 +1,4 @@
-﻿using FinancasPessoais.Domain.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -19,8 +18,8 @@ namespace FinancasPessoais.Domain.Entities
 
         #region Navigation Properties
         
-        public Guid SubcategoryId { get; set; }
-        public Subcategory Subcategory { get; set; }
+        public Guid CategoryId { get; set; }
+        public Category Category { get; set; }
 
         public Guid CreditCardId { get; set; }
         public CreditCard CreditCard { get; set; }
@@ -33,8 +32,8 @@ namespace FinancasPessoais.Domain.Entities
         
         public void CreateParcels(int invoiceClosingDay, int invoiceDueDay)
         {
-            DateTime invoiceClosingDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, invoiceClosingDay);
-            DateTime invoiceDueDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, invoiceDueDay);
+            DateTime invoiceClosingDate = new(DateTime.Now.Year, DateTime.Now.Month, invoiceClosingDay);
+            DateTime invoiceDueDate = new(DateTime.Now.Year, DateTime.Now.Month, invoiceDueDay);
 
             if (PurchaseDate <= invoiceClosingDate)
             {
@@ -47,7 +46,7 @@ namespace FinancasPessoais.Domain.Entities
                     else
                         parcelDueDate = CheckParcelDueDateWeekend(invoiceDueDate.AddMonths(i - 1));
 
-                    FinancialReleases.Add(new FinancialRelease(parcelDueDate, GetValueOfParcel(), SetDescription(i), SubcategoryId, CreditCardId));
+                    FinancialReleases.Add(new FinancialRelease(parcelDueDate, GetValueOfParcel(), SetDescription(i), CategoryId, CreditCardId));
                 }
             }
             else
@@ -55,7 +54,7 @@ namespace FinancasPessoais.Domain.Entities
                 for (int i = 1; i <= NumberOfInstallments; i++)
                 {
                     DateTime parcelDueDate = CheckParcelDueDateWeekend(invoiceDueDate.AddMonths(i));
-                    FinancialReleases.Add(new FinancialRelease(parcelDueDate, GetValueOfParcel(), SetDescription(i), SubcategoryId, CreditCardId));
+                    FinancialReleases.Add(new FinancialRelease(parcelDueDate, GetValueOfParcel(), SetDescription(i), CategoryId, CreditCardId));
                 }
             }
 

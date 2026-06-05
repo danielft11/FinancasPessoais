@@ -39,9 +39,9 @@ namespace FinancasPessoais.Infra.Data.EntitiesConfiguration
                 .HasMaxLength(250);
 
             builder
-               .HasOne(s => s.Subcategory)
-               .WithMany(f => f.FinancialReleases)
-               .HasForeignKey(s => s.SubcategoryId);
+               .HasOne(s => s.Category)
+               .WithMany()
+               .HasForeignKey(s => s.CategoryId);
 
             builder
                 .HasOne(a => a.Account)
@@ -54,7 +54,7 @@ namespace FinancasPessoais.Infra.Data.EntitiesConfiguration
                .WithMany(cr => cr.FinancialReleases)
                .HasForeignKey(cr => cr.CreditCardId);
 
-            /* Shadow Navigation, uma propriedade que existe apenas no banco de dados, mas não existe na classe de domínio.
+            /* Shadow Navigation: uma propriedade que existe apenas no banco de dados, mas não existe na classe de domínio.
             /* Ela é usada para criar um relacionamento entre as entidades sem precisar adicionar uma propriedade de navegação 
             na classe de domínio. */
             builder

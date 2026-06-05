@@ -44,7 +44,7 @@ namespace FinancasPessoais.Infra.Data.Repositories
         {
             return await _context.Accounts
                .Include(a => a.FinancialReleases)
-               .ThenInclude(f => f.Subcategory)
+               .ThenInclude(f => f.Category)
                .Where(a => a.Id == id)
                .FirstOrDefaultAsync();
         }

@@ -121,8 +121,7 @@ namespace FinancasPessoais.Application.Services
                  ReleaseDate = financialRelease.ReleaseDate,
                  Value = financialRelease.Value,
                  Description = financialRelease.Description,
-                 Category = financialRelease.Subcategory.Category.Name,
-                 Subcategory = financialRelease.Subcategory.Name
+                 Category = financialRelease.Category.Name
              });
         }
 
@@ -190,8 +189,7 @@ namespace FinancasPessoais.Application.Services
                     ReleaseDate = release.ReleaseDate,
                     Value = release.Value,
                     Description = release.Description,
-                    Category = release.Subcategory.Category.Name,
-                    Subcategory = release.Subcategory.Name,
+                    Category = release.Category.Name,
                     Account = release.Account.Name
                 });
             }

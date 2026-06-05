@@ -2,7 +2,6 @@
 using FinancasPessoais.Domain.Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
 
 namespace FinancasPessoais.Infra.Data.EntitiesConfiguration
 {
@@ -36,16 +35,22 @@ namespace FinancasPessoais.Infra.Data.EntitiesConfiguration
                 .HasConversion<int>()
                 .HasMaxLength(7);
 
+            builder
+                .HasOne(p => p.ParentCategory)
+                .WithMany()
+                .HasForeignKey(p => p.ParentCategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             SeedCategory(builder);
         }
 
         private static void SeedCategory(EntityTypeBuilder builder)
-        { 
-            builder.HasData(new Category(InitialGuids.GUID_INCOME_CATEGORY_SALARY, "R1", "Salário", ReleaseTypes.Income, "Salário"));
-            builder.HasData(new Category(InitialGuids.GUID_INCOME_CATEGORY_SERVICES, "R2", "Serviços", ReleaseTypes.Income, "Serviços"));
-            builder.HasData(new Category(InitialGuids.GUID_INCOME_CATEGORY_LOANS, "R3", "Empréstimo - Recebimento", ReleaseTypes.Income, "Empréstimo - Recebimento"));
-            builder.HasData(new Category(InitialGuids.GUID_INCOME_OTHERS_INCOMES, "R4", "Outras Receitas", ReleaseTypes.Income, "Outras Receitas"));
-            builder.HasData(new Category(InitialGuids.GUID_EXPENSE_CATEGORY_FOOD, "A1", "Alimentação", ReleaseTypes.Expense, "Alimentação"));
+        {
+            builder.HasData(new Category(InitialGuids.GUID_EXPENSE_CATEGORY_FOOD, "A1", "Alimentação", ReleaseTypes.Expense, null, "Alimentação"));
+            builder.HasData(new Category(InitialGuids.GUID_INCOME_CATEGORY_SALARY, "R1", "Salário", ReleaseTypes.Income, null, "Salário"));
+            builder.HasData(new Category(InitialGuids.GUID_INCOME_CATEGORY_SERVICES, "R2", "Serviços", ReleaseTypes.Income, null, "Serviços"));
+            builder.HasData(new Category(InitialGuids.GUID_INCOME_CATEGORY_LOANS, "R3", "Empréstimo - Recebimento", ReleaseTypes.Income, null, "Empréstimo - Recebimento"));
+            builder.HasData(new Category(InitialGuids.GUID_INCOME_OTHERS_INCOMES, "R4", "Outras Receitas", ReleaseTypes.Income, null, "Outras Receitas"));
         }
 
     }

@@ -17,8 +17,7 @@ namespace FinancasPessoais.Infra.Data.Repositories
         public async Task<IEnumerable<FinancialRelease>> GetFinancialReleasesByAccountIdAsync(Guid? accountId, string userID)
         {
             IQueryable<FinancialRelease> financialReleases = _context.FinancialReleases
-                .Include(f => f.Subcategory)
-                .ThenInclude(f => f.Category)
+                .Include(f => f.Category)
                 .Include(f => f.Account);
 
             if (accountId is null || accountId == Guid.Empty)
@@ -46,8 +45,7 @@ namespace FinancasPessoais.Infra.Data.Repositories
         {
             return await _context.FinancialReleases
                 .Where(f => f.AccountId == accountId && f.ReleaseDate >= firstDay && f.ReleaseDate <= lastDay.AddHours(23).AddMinutes(55) && f.UserId == userID)
-                .Include(f => f.Subcategory)
-                .ThenInclude(f => f.Category)
+                .Include(f => f.Category)
                 .OrderByDescending(f => f.ReleaseDate)
                 .ToListAsync();
         }
@@ -56,8 +54,7 @@ namespace FinancasPessoais.Infra.Data.Repositories
         {
             return await _context.FinancialReleases
                 .Where(f => f.CreditCardId == creditCardId && f.ReleaseDate >= firstDay && f.ReleaseDate < lastDay && f.PaymentDate == null && f.AccountId == null)
-                .Include(f => f.Subcategory)
-                .ThenInclude(f => f.Category)
+                .Include(f => f.Category)
                 .OrderByDescending(f => f.ReleaseDate)
                 .ToListAsync();
         }
@@ -65,7 +62,7 @@ namespace FinancasPessoais.Infra.Data.Repositories
         public async override Task<IEnumerable<FinancialRelease>> GetAsync()
         {
             return await _context.FinancialReleases
-                .Include(f => f.Subcategory)
+                .Include(f => f.Category)
                 .Include(f => f.Account)
                 .ToListAsync();
         }
@@ -73,7 +70,7 @@ namespace FinancasPessoais.Infra.Data.Repositories
         public async override Task<FinancialRelease> GetByIdAsync(Guid id)
         {
             return await _context.FinancialReleases
-                .Include(f => f.Subcategory)
+                .Include(f => f.Category)
                 .Include(f => f.Account)
                 .FirstOrDefaultAsync(e => e.Id == id);
         }
