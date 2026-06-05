@@ -25,7 +25,7 @@ namespace FinancasPessoais.Application.DTOs.Requests
         public int NumberOfInstallments { get; set; }
 
         [Required(ErrorMessage = "The field subcategoriaId is required")]
-        [JsonPropertyName("categoriaId")]
+        [JsonPropertyName("categoria")]
         public Guid CategoryId { get; set; }
 
         [Required(ErrorMessage = "The field cartaoDeCreditoId is required")]
