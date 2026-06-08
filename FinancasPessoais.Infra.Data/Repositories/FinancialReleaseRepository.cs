@@ -31,6 +31,7 @@ namespace FinancasPessoais.Infra.Data.Repositories
 
             return await financialReleases
                 .OrderBy(f => f.ReleaseDate)
+                .ThenBy(f => f.CreationDate)
                 .ToListAsync();
         }
 
