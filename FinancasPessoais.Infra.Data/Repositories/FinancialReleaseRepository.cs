@@ -48,6 +48,7 @@ namespace FinancasPessoais.Infra.Data.Repositories
                 .Where(f => f.AccountId == accountId && f.ReleaseDate >= firstDay && f.ReleaseDate <= lastDay.AddHours(23).AddMinutes(55) && f.UserId == userID)
                 .Include(f => f.Category)
                 .OrderByDescending(f => f.ReleaseDate)
+                .ThenByDescending(f => f.CreationDate)
                 .ToListAsync();
         }
 
