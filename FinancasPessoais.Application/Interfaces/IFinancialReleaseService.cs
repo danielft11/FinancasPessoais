@@ -15,5 +15,6 @@ namespace FinancasPessoais.Application.Interfaces
         Task<PurchaseInInstallmentsResponseDTO> CreatePurchaseInInstallmentsAsync(PurchaseInInstallmentsRequestDTO request, CreditCard creditCard);
         Task PayCreditCardRelease(CreditCardReleasePaymentRequestDTO request);
         Task DeleteFinancialReleaseAsync(Guid id, string userID);
+        Task<ExpenseChartResponseDTO> GetExpensesGroupedByCategoryAsync(ChartRequest request);
     }
 }

@@ -3,6 +3,7 @@ using FinancasPessoais.Application.DTOs.Responses;
 using FinancasPessoais.Application.Factories.Abstract;
 using FinancasPessoais.Application.Interfaces;
 using FinancasPessoais.Domain.Entities;
+using FinancasPessoais.Domain.Interfaces;
 using FinancasPessoais.Domain.Utils;
 using System;
 using System.Collections.Generic;
@@ -74,6 +75,11 @@ namespace FinancasPessoais.Application.Factories
         private static bool ReleaseAmountGreaterThanAccountBalance(FinancialReleaseRequestDTO request, decimal balance)
         {
             return request.Type == ReleaseTypes.Expense && request.Value > balance;
+        }
+
+        public async Task<ExpenseChartResponseDTO> GetExpensesGroupedByCategoryAsync(ChartRequest request)
+        {
+            return await _financialReleaseService.GetExpensesGroupedByCategoryAsync(request);
         }
 
     }

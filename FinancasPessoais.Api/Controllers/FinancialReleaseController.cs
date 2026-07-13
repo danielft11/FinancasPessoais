@@ -232,6 +232,15 @@ namespace FinancasPessoais.Api.Controllers
             return Ok(releases);
         }
 
+        [HttpPost]
+        [Route("chart")]
+        public async Task<IActionResult> Chart([FromBody] ChartRequest request) 
+        {
+            var financialReleases = await _financialReleaseFactory.GetExpensesGroupedByCategoryAsync(request);
+
+            return Ok(financialReleases);
+        }
+
         #endregion
 
         #region Private Methods

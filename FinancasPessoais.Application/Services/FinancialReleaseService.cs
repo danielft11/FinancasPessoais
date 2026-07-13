@@ -7,7 +7,11 @@ using FinancasPessoais.Domain.Interfaces;
 using FinancasPessoais.Domain.Utils;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Reflection.Emit;
+using System.Security.Cryptography.X509Certificates;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace FinancasPessoais.Application.Services
@@ -18,11 +22,15 @@ namespace FinancasPessoais.Application.Services
         private IPurchaseInInstallmentsRepository _purchaseInInstallmentsRepository;
         private readonly IMapper _mapper;
 
+        CultureInfo culture;
+
         public FinancialReleaseService(IFinancialReleaseRepository financialReleaseRepository, IPurchaseInInstallmentsRepository purchaseInInstallmentsRepository, IMapper mapper)
         {
             _financialReleaseRepository = financialReleaseRepository;
             _purchaseInInstallmentsRepository = purchaseInInstallmentsRepository;
             _mapper = mapper;
+
+            culture = new CultureInfo("pt-BR");
         }
 
         public async Task<FinancialReleaseResponseDTO> GetFinancialReleaseByIdAsync(Guid id)
@@ -31,7 +39,7 @@ namespace FinancasPessoais.Application.Services
             return _mapper.Map<FinancialReleaseResponseDTO>(financialRelease);
         }
 
-        public async Task<IEnumerable<CreditCardReleaseResponseDTO>> GetInvoiceByCreditCardId(Guid creditCardId, DateTime firstDay, DateTime lastDay) 
+        public async Task<IEnumerable<CreditCardReleaseResponseDTO>> GetInvoiceByCreditCardId(Guid creditCardId, DateTime firstDay, DateTime lastDay)
         {
             var financialReleases = await _financialReleaseRepository.GetInvoiceByCreditCardId(creditCardId, firstDay, lastDay);
             return financialReleases.Select(financialRelease => new CreditCardReleaseResponseDTO
@@ -81,6 +89,43 @@ namespace FinancasPessoais.Application.Services
                 throw new UnauthorizedAccessException();
 
             await _financialReleaseRepository.RemoveAsync(financialRelease);
+        }
+
+        public async Task<ExpenseChartResponseDTO> GetExpensesGroupedByCategoryAsync(ChartRequest request)
+        {
+            var categoryIds = request.Categories;
+            var result = await _financialReleaseRepository.GetExpensesGroupedByCategoryAsync(categoryIds);
+
+            var periods = result
+                .Select(r => new YearMonth(r.Year, r.Month))
+                .Distinct()
+                .OrderBy(r => r.Year)
+                .ThenBy(r => r.Month)
+                .ToList();
+
+            var datasets = result
+                .GroupBy(x => x.Category)
+                .Select(category => new ExpenseChartDatasetDTO
+                {
+                    Label = category.Key,
+                    CategoryId = category.First().CategoryId,
+                    Data = periods.Select(period => category
+                        .FirstOrDefault(x => x.Year == period.Year && x.Month == period.Month)?.Amount ?? 0)
+                        .ToList()
+                })
+                .ToList();
+
+            var labels = periods
+                .Select(x => $"{culture.DateTimeFormat.GetAbbreviatedMonthName(x.Month).Replace(".", "")}/{x.Year}")
+                .ToList();
+
+            var chart = new ExpenseChartResponseDTO
+            {
+                Labels = labels,
+                Datasets = datasets
+            };
+
+            return chart;
         }
 
     }

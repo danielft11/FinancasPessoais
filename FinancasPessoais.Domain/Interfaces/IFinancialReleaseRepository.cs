@@ -14,6 +14,7 @@ namespace FinancasPessoais.Domain.Interfaces
         Task<IEnumerable<FinancialRelease>> GetMonthlyExtractByAccountIdAsync(Guid accountId, DateTime firstDay, DateTime lastDay, string userID);
         Task<IEnumerable<FinancialRelease>> GetInvoiceByCreditCardId(Guid creditCardId, DateTime firstDay, DateTime lastDay);
         Task PayCreditCardRelease(Guid id, DateTime paymentDate, Guid accountId);
+        Task<IEnumerable<ExpensesGroupedByCategory>> GetExpensesGroupedByCategoryAsync(List<Guid> categoryIds);
     }
 
 }

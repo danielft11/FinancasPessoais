@@ -24,7 +24,7 @@ namespace FinancasPessoais.Infra.Data.Repositories
             {
                 financialReleases = financialReleases.Where(f => f.UserId == userID);
             }
-            else 
+            else
             {
                 financialReleases = financialReleases.Where(f => f.AccountId == accountId && f.UserId == userID);
             }
@@ -96,6 +96,38 @@ namespace FinancasPessoais.Infra.Data.Repositories
             _context.Update(creditCardRelease);
 
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<ExpensesGroupedByCategory>> GetExpensesGroupedByCategoryAsync(List<Guid> categoryIds)
+        {
+            IQueryable<FinancialRelease> financialReleases = _context.FinancialReleases
+                .Where(fr => fr.Type == ReleaseTypes.Expense && fr.PaymentDate != null);
+
+            if (categoryIds.Any()) 
+            {
+                financialReleases = financialReleases.Where(fr => categoryIds.Contains(fr.CategoryId));
+            }
+
+            return await financialReleases
+                .GroupBy(x => new
+                {
+                    Category = x.Category.Name,
+                    CategoryId = x.CategoryId,
+                    Year = x.ReleaseDate.Year,
+                    Month = x.ReleaseDate.Month
+                })
+                .Select(g => new ExpensesGroupedByCategory
+                {
+                    Category = g.Key.Category,
+                    CategoryId = g.Key.CategoryId,
+                    Year = g.Key.Year,
+                    Month = g.Key.Month,
+                    Amount = g.Sum(x => x.Value)
+                })
+                .OrderBy(x => x.Category)
+                .ThenBy(x => x.Year)
+                .ThenBy(x => x.Month)
+                .ToListAsync();
         }
 
     }
